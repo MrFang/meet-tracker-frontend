@@ -1,4 +1,4 @@
-# hello-world
+# meet-tracker-frontend
 
 ## Project setup
 ```
