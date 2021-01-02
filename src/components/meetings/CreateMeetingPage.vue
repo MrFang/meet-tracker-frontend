@@ -35,8 +35,14 @@ export default class CreateMeetingPage extends Vue {
     }
 
     private getTimeStringFromDate (date: Date): string {
-        const hours: string = date.getHours().toString()
-        const minutes: string = date.getMinutes().toString()
+        const hours: string = date.getHours() < 10
+            ? '0' + date.getHours().toString()
+            : date.getHours().toString()
+        const minutes: string = date.getMinutes() < 10
+            ? '0' + date.getMinutes().toString()
+            : date.getMinutes().toString()
+
+        console.log(hours, minutes)
 
         return [hours, minutes].join(':')
     }
