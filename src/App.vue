@@ -1,10 +1,26 @@
 <template>
-    <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
+    <div class="container border">
+        <Header />
+        <router-view/>
     </div>
-    <router-view/>
 </template>
+
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component'
+import Header from './views/Header.vue'
+@Options({
+    components: {
+        Header
+    },
+    provide: {
+        API_URL: process.env.NODE_ENV === 'development'
+            ? 'http://localhost:5000/api'
+            : `${window.location.protocol}//${window.location.host}/api`
+    }
+})
+export default class App extends Vue {
+}
+</script>
 
 <style>
 #app {
@@ -13,18 +29,5 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-}
-
-#nav {
-    padding: 30px;
-}
-
-#nav a {
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-    color: #42b983;
 }
 </style>
