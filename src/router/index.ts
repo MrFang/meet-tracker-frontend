@@ -1,11 +1,17 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import MeetingList from '@/components/meetings/MeetingsList.vue'
+import CreateMeetingForm from '@/components/meetings/CreateMeetingForm.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        name: 'Home',
-        component: Home
+        name: 'MeetingsList',
+        component: MeetingList
+    },
+    {
+        path: '/meetings/create',
+        name: 'CreateMeeting',
+        component: CreateMeetingForm
     },
     {
         path: '/about',
@@ -19,7 +25,8 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
-    routes
+    routes,
+    linkActiveClass: 'active'
 })
 
 export default router

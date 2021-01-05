@@ -11,11 +11,6 @@ import Header from './views/Header.vue'
 @Options({
     components: {
         Header
-    },
-    provide: {
-        API_URL: process.env.NODE_ENV === 'development'
-            ? 'http://localhost:5000/api'
-            : `${window.location.protocol}//${window.location.host}/api`
     }
 })
 export default class App extends Vue {

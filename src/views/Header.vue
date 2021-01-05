@@ -20,7 +20,7 @@ export default class Header extends Vue {}
     color: #2c3e50;
 }
 
-#nav a.router-link-exact-active {
+#nav a.active {
     color: #42b983;
 }
 </style>
