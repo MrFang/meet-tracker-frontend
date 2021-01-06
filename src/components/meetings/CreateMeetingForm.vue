@@ -33,7 +33,6 @@ export default class CreateMeetingForm extends Vue {
             ? '0' + (date.getMonth() + 1).toString()
             : (date.getMonth() + 1).toString()
         const year: string = date.getFullYear().toString()
-        console.log(this.$options)
 
         return [year, month, day].join('-')
     }
@@ -52,7 +51,7 @@ export default class CreateMeetingForm extends Vue {
     private postMeeting (): void {
         const datetime: string = this.date + 'T' + this.time
         createMeeting({ title: this.title, datetime })
-            .then(() => this.$router.push('/'))
+            .then(() => this.$router.push('/meetings'))
             // TODO: Display errors
             .catch(console.error)
     }

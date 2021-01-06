@@ -1,17 +1,22 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import MeetingList from '@/components/meetings/MeetingsList.vue'
+import MeetingsIndex from '@/views/meetings/MeetingsIndex.vue'
 import CreateMeetingForm from '@/components/meetings/CreateMeetingForm.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: '/',
-        name: 'MeetingsList',
-        component: MeetingList
-    },
-    {
-        path: '/meetings/create',
-        name: 'CreateMeeting',
-        component: CreateMeetingForm
+        path: '/meetings',
+        component: { template: '<router-view></router-view>' },
+        alias: '/',
+        children: [
+            {
+                path: '',
+                component: MeetingsIndex
+            },
+            {
+                path: 'create',
+                component: CreateMeetingForm
+            }
+        ]
     },
     {
         path: '/about',
