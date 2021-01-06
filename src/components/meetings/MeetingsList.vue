@@ -1,10 +1,9 @@
 <template>
-    <div class="meeting-list">
-        <div class="meeting" :key="meeting.id" v-for="meeting in meetings">
+    <ul class="list">
+        <li class="meeting" :key="meeting.id" v-for="meeting in meetings">
             {{ meeting }}
-        </div>
-    </div>
-    <router-link to="/meetings/create"><button class="btn btn-primary">Create</button></router-link>
+        </li>
+    </ul>
 </template>
 
 <script lang="ts">
@@ -17,16 +16,15 @@ export default class MeetingsList extends Vue {
 
     created () {
         getMeetingsList()
-            .then((data) => { this.meetings = data || [] })
+            .then((data: Meeting[]) => { this.meetings = data })
             .catch(console.error)
     }
 }
 </script>
 
 <style scoped>
-    .meeting-list {
-        max-width: 60%;
-        margin: 0 auto;
+    .list {
+        list-style-type: none;
     }
     .meeting {
         border: 1px solid gray;
