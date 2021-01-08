@@ -41,3 +41,10 @@ export async function getMeeting (id: number): Promise<Meeting> {
 
     return data
 }
+
+export async function deleteMeeting (id: number): Promise<void> {
+    axios.delete<{id: number}, AxiosResponse<APIResponseWithoutData>>(
+        `${BASE_MEETINGS_API_URL}/delete`,
+        { data: { id } }
+    ).then((resp) => resp.data.success ? null : Promise.reject(resp.data.error))
+}

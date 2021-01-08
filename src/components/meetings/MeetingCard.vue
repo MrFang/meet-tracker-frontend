@@ -1,6 +1,7 @@
 <template>
     <EditMeetingButton />
     <MeetingInfo :meeting="meeting" />
+    <DeleteMeetingButton :meetingId="meeting?.id" />
 </template>
 
 <script lang="ts">
@@ -9,11 +10,13 @@ import { Meeting } from '@/common/types'
 import { getMeeting } from '@/api/meetings'
 import MeetingInfo from '@/components/meetings/MeetingInfo.vue'
 import EditMeetingButton from '@/components/meetings/EditMeetingButton.vue'
+import DeleteMeetingButton from '@/components/meetings/DeleteMeetingButton.vue'
 
 @Options({
     components: {
         MeetingInfo,
-        EditMeetingButton
+        EditMeetingButton,
+        DeleteMeetingButton
     },
     props: {
         meetingId: {
