@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import MeetingsIndex from '@/views/meetings/MeetingsIndex.vue'
-import CreateMeetingForm from '@/components/meetings/CreateMeetingForm.vue'
-import MeetingCard from '@/components/meetings/MeetingCard.vue'
+import MeetingsIndex from '@/components/meetings/MeetingsIndex.vue'
+import MeetingInfoPage from '@/components/meetings/MeetingInfoPage.vue'
+import EditMeetingPage from '@/components/meetings/EditMeetingPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -16,13 +16,23 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'create',
-                component: CreateMeetingForm,
+                component: EditMeetingPage,
                 name: 'CreateMeeting'
             },
             {
                 path: 'info/:id(\\d+)',
-                component: MeetingCard,
+                component: MeetingInfoPage,
                 name: 'MeetingInfo',
+                props: route => ({
+                    meetingId: route.params.id instanceof Array
+                        ? parseInt(route.params.id[0], 10)
+                        : parseInt(route.params.id, 10)
+                })
+            },
+            {
+                path: 'edit/:id(\\d+)',
+                component: EditMeetingPage,
+                name: 'EditMeeting',
                 props: route => ({
                     meetingId: route.params.id instanceof Array
                         ? parseInt(route.params.id[0], 10)

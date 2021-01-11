@@ -1,10 +1,20 @@
 <template>
-    <router-link :to="{name: 'CreateMeeting'}"><button class="btn btn-primary">Edit</button></router-link>
+    <router-link :to="{name: 'EditMeeting', params: { id: meetingId }}"><button class="btn btn-primary">Edit</button></router-link>
 </template>
 
-<script>
-import { Vue } from 'vue-class-component'
-export default class EditMeetingButton extends Vue {}
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component'
+@Options({
+    props: {
+        meetingId: {
+            type: Number,
+            required: true
+        }
+    }
+})
+export default class EditMeetingButton extends Vue {
+    private meetingId!: number
+}
 </script>
 
 <style scoped>
