@@ -1,13 +1,13 @@
 <template>
     <ul class="list">
-        <li class="item" :key="meeting.id" v-for="meeting in items">
-            <router-link :to="{name: 'MeetingInfo', params: {id: meeting.id}}">{{ meeting }}</router-link>
+        <li class="item" :key="contact.id" v-for="contact in items">
+            {{ contact }}
         </li>
     </ul>
 </template>
 
 <script lang="ts">
-import { Meeting } from '@/common/types'
+import { Contact } from '@/common/types'
 import { Options, Vue } from 'vue-class-component'
 
 @Options({
@@ -18,8 +18,8 @@ import { Options, Vue } from 'vue-class-component'
         }
     }
 })
-export default class MeetingsList extends Vue {
-    private items!: Meeting[]
+export default class ContactList extends Vue {
+    private items!: Contact[]
 }
 </script>
 

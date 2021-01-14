@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import MeetingsIndex from '@/components/meetings/MeetingsIndex.vue'
+import MeetingsIndexPage from '@/components/meetings/MeetingsIndexPage.vue'
 import MeetingInfoPage from '@/components/meetings/MeetingInfoPage.vue'
 import EditMeetingPage from '@/components/meetings/EditMeetingPage.vue'
+import ContactsIndexPage from '@/components/contacts/ContactsIndexPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -11,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
         children: [
             {
                 path: '',
-                component: MeetingsIndex,
+                component: MeetingsIndexPage,
                 name: 'Meetings'
             },
             {
@@ -38,6 +39,17 @@ const routes: Array<RouteRecordRaw> = [
                         ? parseInt(route.params.id[0], 10)
                         : parseInt(route.params.id, 10)
                 })
+            }
+        ]
+    },
+    {
+        path: '/contacts',
+        component: { template: '<router-view></router-view>' },
+        children: [
+            {
+                path: '',
+                component: ContactsIndexPage,
+                name: 'Contacts'
             }
         ]
     },

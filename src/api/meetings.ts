@@ -35,36 +35,32 @@ export async function updateMeeting (params: Meeting): Promise<void> {
     ).then((resp) => resp.data.success ? null : Promise.reject(resp.data.error))
 }
 
-export async function getMeetingsList (): Promise<Meeting[]> {
-    const data: Meeting[] = await axios.get<APIResponseWithData<APIMeeting[]>>(
+export async function getMeetings (): Promise<Meeting[]> {
+    const data: APIMeeting[] = await axios.get<APIResponseWithData<APIMeeting[]>>(
         `${BASE_MEETINGS_API_URL}/list`
     ).then((resp) => {
         if (!resp.data.success) {
             return Promise.reject(resp.data.error)
         }
 
-        const data: APIMeeting[] = resp.data.data
-
-        return data.map(APIMeetingToMeeting)
+        return resp.data.data
     })
 
-    return data
+    return data.map(APIMeetingToMeeting)
 }
 
 export async function getMeeting (id: number): Promise<Meeting> {
-    const data: Meeting = await axios.get<APIResponseWithData<APIMeeting>>(
+    const data: APIMeeting = await axios.get<APIResponseWithData<APIMeeting>>(
         `${BASE_MEETINGS_API_URL}/get?id=${id}`
     ).then((resp) => {
         if (!resp.data.success) {
             return Promise.reject(resp.data.error)
         }
 
-        const data: APIMeeting = resp.data.data
-
-        return APIMeetingToMeeting(data)
+        return resp.data.data
     })
 
-    return data
+    return APIMeetingToMeeting(data)
 }
 
 export async function deleteMeeting (id: number): Promise<void> {

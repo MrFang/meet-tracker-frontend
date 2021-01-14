@@ -1,6 +1,6 @@
 <template>
     <MeetingCard v-if="meeting" :meeting="meeting" />
-    <p v-else>Loading...</p>
+    <Loader v-else />
 </template>
 
 <script lang="ts">
@@ -8,10 +8,12 @@ import { Options, Vue } from 'vue-class-component'
 import { getMeeting } from '@/api/meetings'
 import { Meeting } from '@/common/types'
 import MeetingCard from '@/components/meetings/MeetingCard.vue'
+import Loader from '@/components/Loader.vue'
 
 @Options({
     components: {
-        MeetingCard
+        MeetingCard,
+        Loader
     },
     props: {
         meetingId: {

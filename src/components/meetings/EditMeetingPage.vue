@@ -1,11 +1,12 @@
 <template>
     <EditMeetingForm v-if="isNew || isFetched" v-model:meeting="meeting" @submit="handleFormSubmit"/>
-    <p v-else>Loading...</p>
+    <Loader v-else />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import EditMeetingForm from '@/components/meetings/EditMeetingForm.vue'
+import Loader from '@/components/Loader.vue'
 import { Meeting } from '@/common/types'
 import { createMeeting, getMeeting, updateMeeting } from '@/api/meetings'
 
@@ -16,7 +17,8 @@ import { createMeeting, getMeeting, updateMeeting } from '@/api/meetings'
         }
     },
     components: {
-        EditMeetingForm
+        EditMeetingForm,
+        Loader
     }
 })
 export default class EditMeetingPage extends Vue {
