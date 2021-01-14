@@ -30,10 +30,7 @@ export default class EditMeetingPage extends Vue {
     }
 
     private isFetched = false
-
-    get isNew (): boolean {
-        return !this.meetingId
-    }
+    private isNew = !this.meetingId
 
     created () {
         if (!this.isNew) {
