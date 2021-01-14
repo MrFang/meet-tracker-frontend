@@ -1,5 +1,6 @@
 <template>
-    <EditMeetingForm v-model:meeting="meeting" @submit="handleFormSubmit"/>
+    <EditMeetingForm v-if="isNew || isFetched" v-model:meeting="meeting" @submit="handleFormSubmit"/>
+    <p v-else>Loading...</p>
 </template>
 
 <script lang="ts">
@@ -26,19 +27,24 @@ export default class EditMeetingPage extends Vue {
         time: this.getTimeStringFromDate(new Date())
     }
 
+    private isFetched = false
+
     get isNew (): boolean {
         return !this.meetingId
     }
 
     created () {
-        if (this.meetingId) {
+        if (!this.isNew) {
             getMeeting(this.meetingId)
-                .then((data: Meeting) => { this.meeting = data })
+                .then((data: Meeting) => {
+                    this.meeting = data
+                    this.isFetched = true
+                })
                 .catch(console.error)
         }
     }
 
-    private handleFormSubmit () {
+    private handleFormSubmit (): void {
         if (this.isNew) {
             this.createMeeting()
         } else {
