@@ -1,6 +1,7 @@
 <template>
     <template v-if="contacts">
         <ContactList class="list" :items="contacts" />
+        <CreateContactButton />
     </template>
     <Loader v-else />
 </template>
@@ -11,11 +12,13 @@ import { Options, Vue } from 'vue-class-component'
 import { getContacts } from '@/api/contacts'
 import Loader from '@/components/Loader.vue'
 import ContactList from '@/components/contacts/ContactList.vue'
+import CreateContactButton from '@/components/contacts/CreateContactButton.vue'
 
 @Options({
     components: {
         Loader,
-        ContactList
+        ContactList,
+        CreateContactButton
     }
 })
 export default class ContactsIndexPage extends Vue {

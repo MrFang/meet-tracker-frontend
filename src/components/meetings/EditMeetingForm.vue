@@ -27,6 +27,7 @@
 </template>
 
 <script lang="ts">
+import { Meeting } from '@/common/types'
 import { Options, Vue } from 'vue-class-component'
 
 @Options({
@@ -38,6 +39,8 @@ import { Options, Vue } from 'vue-class-component'
     emits: ['update:meeting', 'submit']
 })
 export default class EditMeetingForm extends Vue {
+    private meeting!: Meeting
+
     private submit () {
         this.$emit('submit')
     }

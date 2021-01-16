@@ -3,6 +3,7 @@ import MeetingsIndexPage from '@/components/meetings/MeetingsIndexPage.vue'
 import MeetingInfoPage from '@/components/meetings/MeetingInfoPage.vue'
 import EditMeetingPage from '@/components/meetings/EditMeetingPage.vue'
 import ContactsIndexPage from '@/components/contacts/ContactsIndexPage.vue'
+import EditContactPage from '@/components/contacts/EditContactPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -50,6 +51,11 @@ const routes: Array<RouteRecordRaw> = [
                 path: '',
                 component: ContactsIndexPage,
                 name: 'Contacts'
+            },
+            {
+                path: 'create',
+                component: EditContactPage,
+                name: 'CreateContact'
             }
         ]
     },
