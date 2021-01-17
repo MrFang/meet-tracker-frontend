@@ -4,11 +4,11 @@ export interface Meeting {
     datetime: string
 }
 
-// Sometimes eslint shows error because of snake_case, sometimes not
-// If it happens, try to disable linting in this file
 export interface Contact {
     id: number,
+    // eslint-disable-next-line
     first_name: string,
+    // eslint-disable-next-line
     second_name?: string,
     telephone?: string,
 }

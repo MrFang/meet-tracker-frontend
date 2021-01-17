@@ -67,6 +67,16 @@ const routes: Array<RouteRecordRaw> = [
                         ? parseInt(route.params.id[0], 10)
                         : parseInt(route.params.id, 10)
                 })
+            },
+            {
+                path: 'edit/:id(\\d+)',
+                component: EditContactPage,
+                name: 'EditContact',
+                props: route => ({
+                    contactId: route.params.id instanceof Array
+                        ? parseInt(route.params.id[0], 10)
+                        : parseInt(route.params.id, 10)
+                })
             }
         ]
     },

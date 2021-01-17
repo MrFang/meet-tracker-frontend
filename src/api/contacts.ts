@@ -32,7 +32,9 @@ export async function createContact (contact: Contact): Promise<void> {
     await axios.post<APIResponseWithoutData>(
         `${BASE_CONTACTS_API_URL}/create`,
         {
+            // eslint-disable-next-line
             first_name: contact.firstName,
+            // eslint-disable-next-line
             second_name: contact.secondName,
             telephone: contact.telephone
         }
@@ -57,5 +59,19 @@ export async function deleteContact (id: number): Promise<void> {
     await axios.delete<APIResponseWithoutData>(
         `${BASE_CONTACTS_API_URL}/delete`,
         { data: { id } }
+    ).then((resp) => resp.data.success ? null : Promise.reject(resp.data.error))
+}
+
+export async function updateContact (contact: Contact) {
+    await axios.put<APIResponseWithoutData>(
+        `${BASE_CONTACTS_API_URL}/update`,
+        {
+            id: contact.id,
+            // eslint-disable-next-line
+            first_name: contact.firstName,
+            // eslint-disable-next-line
+            second_name: contact.secondName,
+            telephone: contact.telephone
+        }
     ).then((resp) => resp.data.success ? null : Promise.reject(resp.data.error))
 }

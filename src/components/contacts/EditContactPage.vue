@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import { createContact } from '@/api/contacts'
+import { createContact, getContact, updateContact } from '@/api/contacts'
 import { Contact } from '@/common/types'
 import { Options, Vue } from 'vue-class-component'
 import EditContactForm from '@/components/contacts/EditContactForm.vue'
@@ -30,30 +30,30 @@ export default class EditContactPage extends Vue {
     private isFetched = false
     private isNew = !this.contactId
 
-    // created () {
-    //     if (!this.isNew) {
-    //         getContact(this.meetingId)
-    //             .then((data: Meeting) => {
-    //                 this.meeting = data
-    //                 this.isFetched = true
-    //             })
-    //             .catch(console.error)
-    //     }
-    // }
+    created () {
+        if (!this.isNew) {
+            getContact(this.contactId)
+                .then((data: Contact) => {
+                    this.contact = data
+                    this.isFetched = true
+                })
+                .catch(console.error)
+        }
+    }
 
     private handleFormSubmit (): void {
         if (this.isNew) {
             this.createContact()
         } else {
-            // this.updateMeeting()
+            this.updateContact()
         }
     }
 
-    // private updateMeeting (): void {
-    //     updateMeeting(this.meeting)
-    //         .then(() => this.$router.push({ name: 'Contacts' }))
-    //         .catch(console.error)
-    // }
+    private updateContact (): void {
+        updateContact(this.contact)
+            .then(() => this.$router.push({ name: 'Contacts' }))
+            .catch(console.error)
+    }
 
     private createContact (): void {
         createContact(this.contact)
