@@ -1,7 +1,7 @@
 <template>
     <ul class="list">
         <li class="item" :key="contact.id" v-for="contact in items">
-            {{ contact }}
+            <router-link :to="{ name: 'ContactInfo', params: { id: contact.id } }">{{ contact }}</router-link>
         </li>
     </ul>
 </template>

@@ -4,6 +4,7 @@ import MeetingInfoPage from '@/components/meetings/MeetingInfoPage.vue'
 import EditMeetingPage from '@/components/meetings/EditMeetingPage.vue'
 import ContactsIndexPage from '@/components/contacts/ContactsIndexPage.vue'
 import EditContactPage from '@/components/contacts/EditContactPage.vue'
+import ContactInfoPage from '@/components/contacts/ContactInfoPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -56,6 +57,16 @@ const routes: Array<RouteRecordRaw> = [
                 path: 'create',
                 component: EditContactPage,
                 name: 'CreateContact'
+            },
+            {
+                path: 'info/:id(\\d+)',
+                component: ContactInfoPage,
+                name: 'ContactInfo',
+                props: route => ({
+                    contactId: route.params.id instanceof Array
+                        ? parseInt(route.params.id[0], 10)
+                        : parseInt(route.params.id, 10)
+                })
             }
         ]
     },

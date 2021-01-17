@@ -1,7 +1,7 @@
 <template>
     <ul class="list">
         <li class="item" :key="meeting.id" v-for="meeting in items">
-            <router-link :to="{name: 'MeetingInfo', params: {id: meeting.id}}">{{ meeting }}</router-link>
+            <router-link :to="{ name: 'MeetingInfo', params: { id: meeting.id } }">{{ meeting }}</router-link>
         </li>
     </ul>
 </template>

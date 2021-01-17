@@ -1,5 +1,9 @@
 <template>
-    <MeetingCard v-if="meeting" :meeting="meeting" />
+    <template v-if="meeting">
+        <MeetingInfo :meeting="meeting" />
+        <EditMeetingButton :meetingId="meeting.id" />
+        <DeleteMeetingButton :meetingId="meeting.id" />
+    </template>
     <Loader v-else />
 </template>
 
@@ -7,12 +11,16 @@
 import { Options, Vue } from 'vue-class-component'
 import { getMeeting } from '@/api/meetings'
 import { Meeting } from '@/common/types'
-import MeetingCard from '@/components/meetings/MeetingCard.vue'
+import MeetingInfo from '@/components/meetings/MeetingInfo.vue'
+import EditMeetingButton from '@/components/meetings/EditMeetingButton.vue'
+import DeleteMeetingButton from '@/components/meetings/DeleteMeetingButton.vue'
 import Loader from '@/components/Loader.vue'
 
 @Options({
     components: {
-        MeetingCard,
+        MeetingInfo,
+        EditMeetingButton,
+        DeleteMeetingButton,
         Loader
     },
     props: {

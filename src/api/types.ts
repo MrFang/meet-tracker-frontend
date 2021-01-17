@@ -15,7 +15,7 @@ export interface Contact {
 
 export type APIResponseWithData<T> = SuccessAPIResponseWithData<T> | ErrorAPIResponse
 
-export type APIResponseWithoutData  = SuccessAPIResponseWithoutData | ErrorAPIResponse
+export type APIResponseWithoutData = SuccessAPIResponseWithoutData | ErrorAPIResponse
 
 interface SuccessAPIResponseWithData<T> {
     success: true,

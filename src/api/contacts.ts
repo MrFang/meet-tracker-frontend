@@ -38,3 +38,17 @@ export async function createContact (contact: Contact): Promise<void> {
         }
     ).then((resp) => resp.data.success ? null : Promise.reject(resp.data.error))
 }
+
+export async function getContact (id: number): Promise<Contact> {
+    const data: APIContact = await axios.get<APIResponseWithData<APIContact>>(
+        `${BASE_CONTACTS_API_URL}/get?id=${id}`
+    ).then(resp => {
+        if (!resp.data.success) {
+            return Promise.reject(resp.data.error)
+        }
+
+        return resp.data.data
+    })
+
+    return APIContactToContact(data)
+}
