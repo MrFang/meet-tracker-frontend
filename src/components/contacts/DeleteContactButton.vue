@@ -3,23 +3,23 @@
 </template>
 
 <script lang="ts">
-import { deleteMeeting } from '@/api/meetings'
+import { deleteContact } from '@/api/contacts'
 import { Options, Vue } from 'vue-class-component'
 
 @Options({
     props: {
-        meetingId: {
-            required: true,
-            type: Number
+        contactId: {
+            type: Number,
+            required: true
         }
     }
 })
-export default class DeleteMeetingButton extends Vue {
-    private meetingId!: number
+export default class DeleteContactButton extends Vue {
+    private contactId!: number
 
     private deleteAndRedirect () {
-        deleteMeeting(this.meetingId)
-            .then(() => this.$router.push({ name: 'Meetings' }))
+        deleteContact(this.contactId)
+            .then(resp => this.$router.push({ name: 'Contacts' }))
             .catch(console.error)
     }
 }

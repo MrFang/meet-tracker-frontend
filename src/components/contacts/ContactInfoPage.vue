@@ -1,5 +1,8 @@
 <template>
-    <ContactInfo v-if="contact" :contact="contact" />
+    <template v-if="contact">
+        <ContactInfo :contact="contact" />
+        <DeleteContactButton :contactId="contact.id" />
+    </template>
     <Loader v-else />
 </template>
 
@@ -7,6 +10,7 @@
 import { Options, Vue } from 'vue-class-component'
 import ContactInfo from '@/components/contacts/ContactInfo.vue'
 import Loader from '@/components/Loader.vue'
+import DeleteContactButton from '@/components/contacts//DeleteContactButton.vue'
 import { Contact } from '@/common/types'
 import { getContact } from '@/api/contacts'
 
@@ -19,6 +23,7 @@ import { getContact } from '@/api/contacts'
     },
     components: {
         ContactInfo,
+        DeleteContactButton,
         Loader
     }
 })

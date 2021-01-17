@@ -52,3 +52,10 @@ export async function getContact (id: number): Promise<Contact> {
 
     return APIContactToContact(data)
 }
+
+export async function deleteContact (id: number): Promise<void> {
+    await axios.delete<APIResponseWithoutData>(
+        `${BASE_CONTACTS_API_URL}/delete`,
+        { data: { id } }
+    ).then((resp) => resp.data.success ? null : Promise.reject(resp.data.error))
+}
