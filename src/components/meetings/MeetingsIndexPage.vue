@@ -1,6 +1,6 @@
 <template>
     <template v-if="meetings">
-        <MeetingsList class="list" :items="meetings"/>
+        <List class="list" :items="meetings" :itemTemplate="meetingCard"/>
         <CreateMeetingButton />
     </template>
     <Loader v-else />
@@ -9,20 +9,22 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import { Meeting } from '@/common/types'
-import MeetingsList from '@/components/meetings/MeetingsList.vue'
+import List from '@/components/List.vue'
 import CreateMeetingButton from '@/components/meetings/CreateMeetingButton.vue'
 import Loader from '@/components/Loader.vue'
 import { getMeetings } from '@/api/meetings'
+import MeetingCard from '@/components/meetings/MeetingCard.vue'
 
 @Options({
     components: {
-        MeetingsList,
+        List,
         CreateMeetingButton,
         Loader
     }
 })
 export default class MeetingsIndex extends Vue {
     private meetings: Meeting[] | null = null
+    private meetingCard = MeetingCard
 
     created () {
         getMeetings()

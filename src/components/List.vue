@@ -1,13 +1,12 @@
 <template>
     <ul class="list">
-        <li class="item" :key="meeting.id" v-for="meeting in items">
-            <router-link :to="{ name: 'MeetingInfo', params: { id: meeting.id } }">{{ meeting }}</router-link>
+        <li class="item" :key="idx" v-for="(item, idx) in items">
+            <component :is="itemTemplate" :item="item" />
         </li>
     </ul>
 </template>
 
 <script lang="ts">
-import { Meeting } from '@/common/types'
 import { Options, Vue } from 'vue-class-component'
 
 @Options({
@@ -15,11 +14,18 @@ import { Options, Vue } from 'vue-class-component'
         items: {
             required: true,
             type: Array
+        },
+        itemTemplate: {
+            required: true,
+            type: Function
         }
     }
 })
-export default class MeetingsList extends Vue {
-    private items!: Meeting[]
+export default class List extends Vue {
+    // eslint-disable-next-line
+    private items!: any[]
+    // eslint-disable-next-line
+    private itemTemplate!: any
 }
 </script>
 
