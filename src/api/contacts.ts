@@ -2,17 +2,9 @@ import { Contact } from '@/common/types'
 import axios from 'axios'
 import { BASE_API_URL } from '.'
 import { APIResponseWithData, APIResponseWithoutData, Contact as APIContact } from './types'
+import { APIContactToContact } from './functions'
 
 const BASE_CONTACTS_API_URL = BASE_API_URL + '/contacts'
-
-function APIContactToContact (apiContact: APIContact): Contact {
-    return {
-        id: apiContact.id,
-        firstName: apiContact.first_name,
-        secondName: apiContact.second_name,
-        telephone: apiContact.telephone
-    }
-}
 
 export async function getContacts (): Promise<Contact[]> {
     const data: APIContact[] = await axios.get<APIResponseWithData<APIContact[]>>(

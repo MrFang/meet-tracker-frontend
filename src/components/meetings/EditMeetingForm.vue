@@ -22,13 +22,25 @@
                 @input="$emit('update:meeting', {...meeting, time: $event.target.value})"
             />
         </div>
+        <div class="form-group">
+            <label>Участники</label>
+            <SearchField
+                class="form-control"
+                :suggestedItems="suggestedParticipants"
+                :itemTemplate="contactCard"
+                @inputChange="participantInputChange"
+            />
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </template>
 
 <script lang="ts">
-import { Meeting } from '@/common/types'
+import { Contact, Meeting } from '@/common/types'
 import { Options, Vue } from 'vue-class-component'
+import { searchContacts } from '@/api/search'
+import SearchField from '@/components/SearchField.vue'
+import ContactCard from '@/components/contacts/ContactCard.vue'
 
 @Options({
     props: {
@@ -36,13 +48,24 @@ import { Options, Vue } from 'vue-class-component'
             required: true
         }
     },
-    emits: ['update:meeting', 'submit']
+    emits: ['update:meeting', 'submit'],
+    components: {
+        SearchField
+    }
 })
 export default class EditMeetingForm extends Vue {
     private meeting!: Meeting
+    private suggestedParticipants: Contact[] = []
+    private contactCard = ContactCard
 
     private submit () {
         this.$emit('submit')
+    }
+
+    private participantInputChange (newValue: string) {
+        searchContacts(newValue)
+            .then(result => { this.suggestedParticipants = result })
+            .catch(console.error)
     }
 }
 </script>
