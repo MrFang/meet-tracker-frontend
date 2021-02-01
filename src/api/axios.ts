@@ -16,16 +16,24 @@ const withoutAuth = axios.create({
     baseURL: BASE_API_URL
 })
 const withAuth = axios.create({
-    baseURL: BASE_API_URL,
-    headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-    }
+    baseURL: BASE_API_URL
 })
+
+withAuth.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('accessToken')
+        config.headers = { ...config.headers, Authorization: `Bearer ${token}` }
+
+        return config
+    },
+    (err) => Promise.reject(err)
+)
 
 withoutAuth.interceptors.response.use(
     (response: AxiosResponse<APIResponseWithoutData | APIResponseWithData<any>>) => checkAPIResponse(response),
-    (error: any) => error
+    (error: any) => Promise.reject(error)
 )
+
 withAuth.interceptors.response.use(
     (response: AxiosResponse<APIResponseWithoutData | APIResponseWithData<any>>) => checkAPIResponse(response),
     async (error: any) => {
@@ -34,13 +42,14 @@ withAuth.interceptors.response.use(
                 await refresh()
             } catch (err) {
                 if (err.response.status === 401) {
-                    router.push({ params: { name: 'Login' } })
+                    router.push({ name: 'Login' })
+                    return Promise.reject(err)
                 } else {
                     throw err
                 }
             }
             const retryConfig = error.response.config
-            retryConfig.headers = { ...retryConfig.headers, Authorization:  `Bearer ${localStorage.getItem('accessToken')}` }
+            retryConfig.headers = { ...retryConfig.headers, Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
 
             return withAuth.request(retryConfig)
         } else {

@@ -45,7 +45,7 @@ export async function deleteContact (id: number): Promise<void> {
 
 export async function updateContact (contact: Contact) {
     await withAuth.put<SuccessAPIResponseWithoutData>(
-        `contacts/update`,
+        'contacts/update',
         {
             id: contact.id,
             // eslint-disable-next-line

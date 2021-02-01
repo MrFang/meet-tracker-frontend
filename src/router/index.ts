@@ -5,8 +5,14 @@ import EditMeetingPage from '@/components/meetings/EditMeetingPage.vue'
 import ContactsIndexPage from '@/components/contacts/ContactsIndexPage.vue'
 import EditContactPage from '@/components/contacts/EditContactPage.vue'
 import ContactInfoPage from '@/components/contacts/ContactInfoPage.vue'
+import LoginPage from '@/components/auth/LoginPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
+    {
+        path: '/login',
+        component: LoginPage,
+        name: 'Login'
+    },
     {
         path: '/meetings',
         component: { template: '<router-view></router-view>' },
@@ -79,14 +85,6 @@ const routes: Array<RouteRecordRaw> = [
                 })
             }
         ]
-    },
-    {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
 ]
 

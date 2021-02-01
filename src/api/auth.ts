@@ -1,8 +1,7 @@
 import { withoutAuth } from './axios'
 
-
 export async function register (username: string, password: string): Promise<any> {
-    withoutAuth.post(
+    await withoutAuth.post(
         '/auth/register',
         {
             username,
@@ -12,7 +11,7 @@ export async function register (username: string, password: string): Promise<any
 }
 
 export async function login (username: string, password: string): Promise<any> {
-    withoutAuth.post(
+    await withoutAuth.post(
         '/auth/login',
         {
             username,
@@ -20,28 +19,27 @@ export async function login (username: string, password: string): Promise<any> {
         }
     ).then(resp => {
         localStorage.setItem('accessToken', resp.data.data.access_token)
-        localStorage.setItem('refreshToken', resp.data.data.resresh_token)
+        localStorage.setItem('refreshToken', resp.data.data.refresh_token)
     })
 }
 
 export async function refresh (): Promise<any> {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('accessToken')
     const refreshToken = localStorage.getItem('refreshToken')
-    withoutAuth.get(
+    const resp = await withoutAuth.get(
         '/auth/refresh',
         {
             headers: { Authorization: `Bearer ${refreshToken}` }
         }
-    ).then(resp => {
-        localStorage.setItem('accessToken', resp.data.data.token)
-    })
+    )
+    localStorage.setItem('accessToken', resp.data.data.token)
 }
 
-export async function logout(): Promise<any> {
+export async function logout (): Promise<any> {
     const accessToken = localStorage.getItem('accessToken')
     const refreshToken = localStorage.getItem('refreshToken')
 
-    withoutAuth.post(
+    await withoutAuth.post(
         '/auth/logout',
         {
             // eslint-disable-next-line
