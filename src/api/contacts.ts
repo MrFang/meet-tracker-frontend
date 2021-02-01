@@ -1,19 +1,12 @@
 import { Contact } from '@/common/types'
-import axios from 'axios'
-import { BASE_API_URL } from '.'
-import { APIResponseWithData, APIResponseWithoutData, Contact as APIContact } from './types'
-import { APIContactToContact } from './functions'
-
-const BASE_CONTACTS_API_URL = BASE_API_URL + '/contacts'
+import { withAuth } from './axios'
+import { SuccessAPIResponseWithData, SuccessAPIResponseWithoutData, Contact as APIContact } from './types'
+import { APIContactToContact } from './utils'
 
 export async function getContacts (): Promise<Contact[]> {
-    const data: APIContact[] = await axios.get<APIResponseWithData<APIContact[]>>(
-        `${BASE_CONTACTS_API_URL}/list`
+    const data: APIContact[] = await withAuth.get<SuccessAPIResponseWithData<APIContact[]>>(
+        'contacts/list'
     ).then(resp => {
-        if (!resp.data.success) {
-            return Promise.reject(resp.data.error)
-        }
-
         return resp.data.data
     })
 
@@ -21,8 +14,8 @@ export async function getContacts (): Promise<Contact[]> {
 }
 
 export async function createContact (contact: Contact): Promise<void> {
-    await axios.post<APIResponseWithoutData>(
-        `${BASE_CONTACTS_API_URL}/create`,
+    await withAuth.post<SuccessAPIResponseWithoutData>(
+        'contacts/create',
         {
             // eslint-disable-next-line
             first_name: contact.firstName,
@@ -30,17 +23,13 @@ export async function createContact (contact: Contact): Promise<void> {
             second_name: contact.secondName,
             telephone: contact.telephone
         }
-    ).then((resp) => resp.data.success ? null : Promise.reject(resp.data.error))
+    )
 }
 
 export async function getContact (id: number): Promise<Contact> {
-    const data: APIContact = await axios.get<APIResponseWithData<APIContact>>(
-        `${BASE_CONTACTS_API_URL}/get?id=${id}`
+    const data: APIContact = await withAuth.get<SuccessAPIResponseWithData<APIContact>>(
+        `constacts/get?id=${id}`
     ).then(resp => {
-        if (!resp.data.success) {
-            return Promise.reject(resp.data.error)
-        }
-
         return resp.data.data
     })
 
@@ -48,15 +37,15 @@ export async function getContact (id: number): Promise<Contact> {
 }
 
 export async function deleteContact (id: number): Promise<void> {
-    await axios.delete<APIResponseWithoutData>(
-        `${BASE_CONTACTS_API_URL}/delete`,
+    await withAuth.delete<SuccessAPIResponseWithoutData>(
+        'contacts/delete',
         { data: { id } }
-    ).then((resp) => resp.data.success ? null : Promise.reject(resp.data.error))
+    )
 }
 
 export async function updateContact (contact: Contact) {
-    await axios.put<APIResponseWithoutData>(
-        `${BASE_CONTACTS_API_URL}/update`,
+    await withAuth.put<SuccessAPIResponseWithoutData>(
+        `contacts/update`,
         {
             id: contact.id,
             // eslint-disable-next-line
@@ -65,5 +54,5 @@ export async function updateContact (contact: Contact) {
             second_name: contact.secondName,
             telephone: contact.telephone
         }
-    ).then((resp) => resp.data.success ? null : Promise.reject(resp.data.error))
+    )
 }

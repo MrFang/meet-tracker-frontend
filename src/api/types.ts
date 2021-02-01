@@ -17,13 +17,13 @@ export type APIResponseWithData<T> = SuccessAPIResponseWithData<T> | ErrorAPIRes
 
 export type APIResponseWithoutData = SuccessAPIResponseWithoutData | ErrorAPIResponse
 
-interface SuccessAPIResponseWithData<T> {
+export interface SuccessAPIResponseWithData<T> {
     success: true,
     error: null,
     data: T
 }
 
-interface SuccessAPIResponseWithoutData {
+export interface SuccessAPIResponseWithoutData {
     success: true,
     error: null,
     data: null
