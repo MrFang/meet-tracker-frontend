@@ -6,12 +6,18 @@ import ContactsIndexPage from '@/components/contacts/ContactsIndexPage.vue'
 import EditContactPage from '@/components/contacts/EditContactPage.vue'
 import ContactInfoPage from '@/components/contacts/ContactInfoPage.vue'
 import LoginPage from '@/components/auth/LoginPage.vue'
+import RegisterPage from '@/components/auth/RegisterPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/login',
         component: LoginPage,
         name: 'Login'
+    },
+    {
+        path: '/register',
+        component: RegisterPage,
+        name: 'Register'
     },
     {
         path: '/meetings',

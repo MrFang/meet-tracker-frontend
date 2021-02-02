@@ -11,16 +11,16 @@ export async function register (username: string, password: string): Promise<any
 }
 
 export async function login (username: string, password: string): Promise<any> {
-    await withoutAuth.post(
+    const resp = await withoutAuth.post(
         '/auth/login',
         {
             username,
             password
         }
-    ).then(resp => {
-        localStorage.setItem('accessToken', resp.data.data.access_token)
-        localStorage.setItem('refreshToken', resp.data.data.refresh_token)
-    })
+    )
+
+    localStorage.setItem('accessToken', resp.data.data.access_token)
+    localStorage.setItem('refreshToken', resp.data.data.refresh_token)
 }
 
 export async function refresh (): Promise<any> {
@@ -32,6 +32,7 @@ export async function refresh (): Promise<any> {
             headers: { Authorization: `Bearer ${refreshToken}` }
         }
     )
+
     localStorage.setItem('accessToken', resp.data.data.token)
 }
 
@@ -47,8 +48,8 @@ export async function logout (): Promise<any> {
             // eslint-disable-next-line
             refresh_token: refreshToken
         }
-    ).then(resp => {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
-    })
+    )
+
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
 }

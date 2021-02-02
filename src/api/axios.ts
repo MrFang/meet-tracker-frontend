@@ -29,11 +29,6 @@ withAuth.interceptors.request.use(
     (err) => Promise.reject(err)
 )
 
-withoutAuth.interceptors.response.use(
-    (response: AxiosResponse<APIResponseWithoutData | APIResponseWithData<any>>) => checkAPIResponse(response),
-    (error: any) => Promise.reject(error)
-)
-
 withAuth.interceptors.response.use(
     (response: AxiosResponse<APIResponseWithoutData | APIResponseWithData<any>>) => checkAPIResponse(response),
     async (error: any) => {
@@ -43,7 +38,7 @@ withAuth.interceptors.response.use(
             } catch (err) {
                 if (err.response.status === 401) {
                     router.push({ name: 'Login' })
-                    return Promise.reject(err)
+                    throw err
                 } else {
                     throw err
                 }
@@ -56,6 +51,11 @@ withAuth.interceptors.response.use(
             return Promise.reject(error)
         }
     }
+)
+
+withoutAuth.interceptors.response.use(
+    (response: AxiosResponse<APIResponseWithoutData | APIResponseWithData<any>>) => checkAPIResponse(response),
+    (error: any) => Promise.reject(error)
 )
 
 export { withAuth, withoutAuth }
