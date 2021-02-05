@@ -1,12 +1,22 @@
 <template>
-      <div id="nav">
-        <router-link :to="{ name: 'Meetings' }">Meetings</router-link> |
-        <router-link :to="{ name: 'Contacts' }">Contacts</router-link>
+    <div class="d-flex justify-content-center align-items-center">
+        <div id="nav">
+            <router-link :to="{ name: 'Meetings' }">Meetings</router-link> |
+            <router-link :to="{ name: 'Contacts' }">Contacts</router-link>
+        </div>
+        <LogoutButton />
     </div>
 </template>
 
 <script>
-import { Vue } from 'vue-class-component'
+import { Options, Vue } from 'vue-class-component'
+import LogoutButton from '@/components/auth/LogoutButton'
+
+@Options({
+    components: {
+        LogoutButton
+    }
+})
 export default class Header extends Vue {}
 </script>
 
