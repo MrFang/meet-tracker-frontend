@@ -22,7 +22,7 @@
                 @input="$emit('update:contact', {...contact, telephone: $event.target.value || null})"
             />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
 </template>
 

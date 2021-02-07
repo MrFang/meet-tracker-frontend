@@ -31,7 +31,7 @@
                 @inputChange="participantInputChange"
             />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
 </template>
 

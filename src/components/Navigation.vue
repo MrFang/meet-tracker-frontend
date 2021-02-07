@@ -1,7 +1,7 @@
 <template>
     <div id="nav">
-        <router-link :to="{ name: 'Meetings' }">Meetings</router-link> |
-        <router-link :to="{ name: 'Contacts' }">Contacts</router-link>
+        <router-link :to="{ name: 'Meetings' }">Встречи</router-link> |
+        <router-link :to="{ name: 'Contacts' }">Контакты</router-link>
     </div>
 </template>
 

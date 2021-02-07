@@ -1,5 +1,5 @@
 <template>
-    <button class="btn btn-danger" @click="deleteAndRedirect">Delete</button>
+    <button class="btn btn-danger" @click="deleteAndRedirect">Удалить контакт</button>
 </template>
 
 <script lang="ts">
@@ -19,7 +19,7 @@ export default class DeleteContactButton extends Vue {
 
     private deleteAndRedirect () {
         deleteContact(this.contactId)
-            .then(resp => this.$router.push({ name: 'Contacts' }))
+            .then(() => this.$router.push({ name: 'Contacts' }))
             .catch(console.error)
     }
 }

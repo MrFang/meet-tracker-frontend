@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{name: 'CreateMeeting'}"><button class="btn btn-primary">Create</button></router-link>
+    <router-link :to="{name: 'CreateMeeting'}"><button class="btn btn-primary">Создать встречу</button></router-link>
 </template>
 
 <script>

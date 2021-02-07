@@ -1,5 +1,5 @@
 <template>
-    <button class="btn btn-danger" @click="deleteAndRedirect">Delete</button>
+    <button class="btn btn-danger" @click="deleteAndRedirect">Удалить встречу</button>
 </template>
 
 <script lang="ts">

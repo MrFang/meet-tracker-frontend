@@ -22,9 +22,9 @@ import { Options, Vue } from 'vue-class-component'
     }
 })
 export default class List extends Vue {
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private items!: any[]
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private itemTemplate!: any
 }
 </script>

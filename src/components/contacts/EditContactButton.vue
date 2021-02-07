@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{ name: 'EditContact', params: { id: contactId } }"><button class="btn btn-primary">Edit</button></router-link>
+    <router-link :to="{ name: 'EditContact', params: { id: contactId } }"><button class="btn btn-primary">Изменить контакт</button></router-link>
 </template>
 
 <script lang="ts">
