@@ -1,27 +1,27 @@
 <template>
-    <form @submit.prevent="login">
-        <div class="form-group">
-            <label>Логин</label>
-            <input class="form-control" type="text" v-model="username" required />
-        </div>
-        <div class="form-group">
-            <label>Пароль</label>
-            <input class="form-control" type="password" v-model="password" required />
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <h1>Вход</h1>
+    <CredentialsForm v-model:credentials="credentials" @submit="login"/>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { Options, Vue } from 'vue-class-component'
 import { login } from '@/api/auth'
+import { UserCredentials } from '@/common/types'
+import CredentialsForm from '@/components/auth/CredentialsForm.vue'
 
+@Options({
+    components: {
+        CredentialsForm
+    }
+})
 export default class LoginPage extends Vue {
-    private username = ''
-    private password = ''
+    private credentials: UserCredentials = {
+        username: '',
+        password: ''
+    }
 
     private login (): void {
-        login(this.username, this.password)
+        login(this.credentials)
             .then(() => { this.$router.push({ name: 'Meetings' }) })
     }
 }

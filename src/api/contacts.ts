@@ -17,9 +17,9 @@ export async function createContact (contact: Contact): Promise<void> {
     await withAuth.post<SuccessAPIResponseWithoutData>(
         'contacts/create',
         {
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/camelcase
             first_name: contact.firstName,
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/camelcase
             second_name: contact.secondName,
             telephone: contact.telephone
         }
@@ -28,7 +28,7 @@ export async function createContact (contact: Contact): Promise<void> {
 
 export async function getContact (id: number): Promise<Contact> {
     const data: APIContact = await withAuth.get<SuccessAPIResponseWithData<APIContact>>(
-        `constacts/get?id=${id}`
+        `contacts/get?id=${id}`
     ).then(resp => {
         return resp.data.data
     })
@@ -48,9 +48,9 @@ export async function updateContact (contact: Contact) {
         'contacts/update',
         {
             id: contact.id,
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/camelcase
             first_name: contact.firstName,
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/camelcase
             second_name: contact.secondName,
             telephone: contact.telephone
         }

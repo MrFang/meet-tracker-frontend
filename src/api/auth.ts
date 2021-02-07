@@ -1,21 +1,23 @@
+import { UserCredentials } from '@/common/types'
 import { withoutAuth } from './axios'
+import { LoginResponse, RefreshResponse, SuccessAPIResponseWithData, SuccessAPIResponseWithoutData } from './types'
 
-export async function register (username: string, password: string): Promise<any> {
-    await withoutAuth.post(
+export async function register (credentials: UserCredentials): Promise<void> {
+    await withoutAuth.post<SuccessAPIResponseWithoutData>(
         '/auth/register',
         {
-            username,
-            password
+            username: credentials.username,
+            password: credentials.password
         }
     )
 }
 
-export async function login (username: string, password: string): Promise<any> {
-    const resp = await withoutAuth.post(
+export async function login (credentials: UserCredentials): Promise<void> {
+    const resp = await withoutAuth.post<SuccessAPIResponseWithData<LoginResponse>>(
         '/auth/login',
         {
-            username,
-            password
+            username: credentials.username,
+            password: credentials.password
         }
     )
 
@@ -23,10 +25,10 @@ export async function login (username: string, password: string): Promise<any> {
     localStorage.setItem('refreshToken', resp.data.data.refresh_token)
 }
 
-export async function refresh (): Promise<any> {
+export async function refresh (): Promise<void> {
     localStorage.removeItem('accessToken')
     const refreshToken = localStorage.getItem('refreshToken')
-    const resp = await withoutAuth.get(
+    const resp = await withoutAuth.get<SuccessAPIResponseWithData<RefreshResponse>>(
         '/auth/refresh',
         {
             headers: { Authorization: `Bearer ${refreshToken}` }
@@ -36,11 +38,11 @@ export async function refresh (): Promise<any> {
     localStorage.setItem('accessToken', resp.data.data.token)
 }
 
-export async function logout (): Promise<any> {
+export async function logout (): Promise<void> {
     const accessToken = localStorage.getItem('accessToken')
     const refreshToken = localStorage.getItem('refreshToken')
 
-    await withoutAuth.post(
+    await withoutAuth.post<SuccessAPIResponseWithoutData>(
         '/auth/logout',
         {
             // eslint-disable-next-line

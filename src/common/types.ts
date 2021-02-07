@@ -1,13 +1,18 @@
 export interface Meeting {
-    id?: number,
-    title: string,
-    date: string,
-    time: string
+    id?: number;
+    title: string;
+    date: string;
+    time: string;
 }
 
 export interface Contact {
-    id?: number,
-    firstName: string,
-    secondName?: string,
-    telephone?: string
+    id?: number;
+    firstName: string;
+    secondName?: string;
+    telephone?: string;
+}
+
+export interface UserCredentials {
+    username: string;
+    password: string;
 }

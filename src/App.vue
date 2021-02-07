@@ -1,20 +1,13 @@
 <template>
     <div class="container">
-        <Header />
         <router-view/>
     </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
-import Header from './views/Header.vue'
-@Options({
-    components: {
-        Header
-    }
-})
-export default class App extends Vue {
-}
+import { Vue } from 'vue-class-component'
+
+export default class App extends Vue {}
 </script>
 
 <style>

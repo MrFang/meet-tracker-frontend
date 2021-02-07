@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import AuthLayout from '@/layouts/AuthLayout.vue'
+import ContentLayout from '@/layouts/ContentLayout.vue'
 import MeetingsIndexPage from '@/components/meetings/MeetingsIndexPage.vue'
 import MeetingInfoPage from '@/components/meetings/MeetingInfoPage.vue'
 import EditMeetingPage from '@/components/meetings/EditMeetingPage.vue'
@@ -10,18 +12,8 @@ import RegisterPage from '@/components/auth/RegisterPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: '/login',
-        component: LoginPage,
-        name: 'Login'
-    },
-    {
-        path: '/register',
-        component: RegisterPage,
-        name: 'Register'
-    },
-    {
         path: '/meetings',
-        component: { template: '<router-view></router-view>' },
+        component: ContentLayout,
         alias: '/',
         children: [
             {
@@ -58,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/contacts',
-        component: { template: '<router-view></router-view>' },
+        component: ContentLayout,
         children: [
             {
                 path: '',
@@ -89,6 +81,22 @@ const routes: Array<RouteRecordRaw> = [
                         ? parseInt(route.params.id[0], 10)
                         : parseInt(route.params.id, 10)
                 })
+            }
+        ]
+    },
+    {
+        path: '/auth',
+        component: AuthLayout,
+        children: [
+            {
+                path: '/login',
+                component: LoginPage,
+                name: 'Login'
+            },
+            {
+                path: '/register',
+                component: RegisterPage,
+                name: 'Register'
             }
         ]
     }

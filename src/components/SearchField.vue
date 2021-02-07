@@ -24,16 +24,15 @@ import List from '@/components/List.vue'
     }
 })
 export default class SearchField extends Vue {
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private suggestedItems!: any[]
-    // eslint-disable-next-line
-    private itemTemplate!: any
+    private itemTemplate!: Function
 
     get showSuggested (): boolean {
         return this.suggestedItems.length > 0
     }
 
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private onChange (event: any) {
         this.$emit('inputChange', event.target.value)
     }

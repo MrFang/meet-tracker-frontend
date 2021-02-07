@@ -1,10 +1,10 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { APIResponseWithData, APIResponseWithoutData } from './types'
 import { BASE_API_URL } from '.'
 import { refresh } from './auth'
 import router from '@/router'
 
-function checkAPIResponse (resp: AxiosResponse<APIResponseWithData<any> | APIResponseWithoutData>) {
+function checkAPIResponse (resp: AxiosResponse<APIResponseWithData<unknown> | APIResponseWithoutData>) {
     if (!resp.data.success) {
         return Promise.reject(resp.data.error)
     }
@@ -30,32 +30,32 @@ withAuth.interceptors.request.use(
 )
 
 withAuth.interceptors.response.use(
-    (response: AxiosResponse<APIResponseWithoutData | APIResponseWithData<any>>) => checkAPIResponse(response),
-    async (error: any) => {
-        if (error.response.status === 401) {
+    (response: AxiosResponse<APIResponseWithoutData | APIResponseWithData<unknown>>) => checkAPIResponse(response),
+    async (authError: AxiosError) => {
+        if (authError.response && authError.response.status === 401) {
             try {
                 await refresh()
-            } catch (err) {
-                if (err.response.status === 401) {
+            } catch (refreshError) {
+                if (refreshError.response.status === 401) {
                     router.push({ name: 'Login' })
-                    throw err
+                    throw refreshError
                 } else {
-                    throw err
+                    throw refreshError
                 }
             }
-            const retryConfig = error.response.config
+            const retryConfig = authError.response.config
             retryConfig.headers = { ...retryConfig.headers, Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
 
             return withAuth.request(retryConfig)
         } else {
-            return Promise.reject(error)
+            return Promise.reject(authError)
         }
     }
 )
 
 withoutAuth.interceptors.response.use(
-    (response: AxiosResponse<APIResponseWithoutData | APIResponseWithData<any>>) => checkAPIResponse(response),
-    (error: any) => Promise.reject(error)
+    (response: AxiosResponse<APIResponseWithoutData | APIResponseWithData<unknown>>) => checkAPIResponse(response),
+    (error: AxiosError) => Promise.reject(error)
 )
 
 export { withAuth, withoutAuth }
