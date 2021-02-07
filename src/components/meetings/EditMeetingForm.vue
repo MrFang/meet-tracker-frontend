@@ -24,11 +24,15 @@
         </div>
         <div class="form-group">
             <label>Участники</label>
+            <div>
+                <span :key="contact.id" v-for="contact in meeting.contacts">{{contact.firstName}}</span>
+            </div>
             <SearchField
                 class="form-control"
                 :suggestedItems="suggestedParticipants"
                 :itemTemplate="contactCard"
                 @inputChange="participantInputChange"
+                @suggestionSelected="addContact"
             />
         </div>
         <button type="submit" class="btn btn-primary">Сохранить</button>
@@ -66,6 +70,11 @@ export default class EditMeetingForm extends Vue {
         searchContacts(newValue)
             .then(result => { this.suggestedParticipants = result })
             .catch(console.error)
+    }
+
+    private addContact (event: Contact) {
+        this.meeting.contacts.push(event)
+        this.$emit('update:meeting', this.meeting)
     }
 }
 </script>

@@ -1,6 +1,11 @@
 <template>
-    <input v-bind="$attrs" type="text" @input="onChange"/>
-    <List v-if="showSuggested" :items="suggestedItems" :itemTemplate="itemTemplate" />
+    <input v-bind="$attrs" v-model="searchString" type="text" @input="$emit('inputChange', $event.target.value)"/>
+    <List
+        v-if="showSuggested"
+        :items="suggestedItems"
+        :itemTemplate="itemTemplate"
+        @itemClicked="$emit('suggestionSelected', $event)"
+    />
 </template>
 
 <script lang="ts">
@@ -18,7 +23,7 @@ import List from '@/components/List.vue'
             type: Function
         }
     },
-    emits: ['inputChange'],
+    emits: ['inputChange', 'suggestionSelected'],
     components: {
         List
     }
@@ -27,14 +32,10 @@ export default class SearchField extends Vue {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private suggestedItems!: any[]
     private itemTemplate!: Function
+    private searchString = ''
 
     get showSuggested (): boolean {
         return this.suggestedItems.length > 0
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private onChange (event: any) {
-        this.$emit('inputChange', event.target.value)
     }
 }
 </script>

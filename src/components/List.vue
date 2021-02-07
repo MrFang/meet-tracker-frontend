@@ -1,6 +1,6 @@
 <template>
     <ul class="list">
-        <li class="item" :key="idx" v-for="(item, idx) in items">
+        <li class="item" :key="idx" v-for="(item, idx) in items" @click="$emit('itemClicked', item)">
             <component :is="itemTemplate" :item="item" />
         </li>
     </ul>
@@ -19,7 +19,8 @@ import { Options, Vue } from 'vue-class-component'
             required: true,
             type: Function
         }
-    }
+    },
+    emits: ['itemClicked']
 })
 export default class List extends Vue {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

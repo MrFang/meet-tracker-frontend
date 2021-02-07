@@ -2,6 +2,7 @@ export interface Meeting {
     id: number;
     title: string;
     datetime: string;
+    contacts: Contact[]
 }
 
 export interface Contact {

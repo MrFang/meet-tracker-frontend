@@ -26,7 +26,8 @@ export default class EditMeetingPage extends Vue {
     private meeting: Meeting = {
         title: '',
         date: this.getDateStringFromDate(new Date()),
-        time: this.getTimeStringFromDate(new Date())
+        time: this.getTimeStringFromDate(new Date()),
+        contacts: []
     }
 
     private isFetched = false

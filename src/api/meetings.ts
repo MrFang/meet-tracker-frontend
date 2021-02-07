@@ -1,22 +1,25 @@
 import { Meeting } from '@/common/types'
 import { Meeting as APIMeeting, SuccessAPIResponseWithData, SuccessAPIResponseWithoutData } from './types'
 import { withAuth } from './axios'
+import { APIContactToContact } from './utils'
 
 function APIMeetingToMeeting (apiMeeting: APIMeeting): Meeting {
     return {
         id: apiMeeting.id,
         title: apiMeeting.title,
         date: apiMeeting.datetime.split('T')[0],
-        time: apiMeeting.datetime.split('T')[1]
+        time: apiMeeting.datetime.split('T')[1],
+        contacts: apiMeeting.contacts.map(APIContactToContact)
     }
 }
 
-export async function createMeeting (params: Meeting): Promise<void> {
+export async function createMeeting (meeting: Meeting): Promise<void> {
     await withAuth.post<SuccessAPIResponseWithoutData>(
         'meetings/create',
         {
-            title: params.title,
-            datetime: params.date + 'T' + params.time
+            title: meeting.title,
+            datetime: meeting.date + 'T' + meeting.time,
+            contacts: meeting.contacts
         }
     )
 }
