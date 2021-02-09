@@ -1,7 +1,7 @@
 import { Meeting } from '@/common/types'
 import { Meeting as APIMeeting, SuccessAPIResponseWithData, SuccessAPIResponseWithoutData } from './types'
 import { withAuth } from './axios'
-import { APIContactToContact } from './utils'
+import { APIContactToContact, ContactToAPIContact } from './utils'
 
 function APIMeetingToMeeting (apiMeeting: APIMeeting): Meeting {
     return {
@@ -19,18 +19,19 @@ export async function createMeeting (meeting: Meeting): Promise<void> {
         {
             title: meeting.title,
             datetime: meeting.date + 'T' + meeting.time,
-            contacts: meeting.contacts
+            contacts: meeting.contacts.map(ContactToAPIContact)
         }
     )
 }
 
-export async function updateMeeting (params: Meeting): Promise<void> {
+export async function updateMeeting (meeting: Meeting): Promise<void> {
     await withAuth.put<SuccessAPIResponseWithoutData>(
         'meetings/update',
         {
-            id: params.id,
-            title: params.title,
-            datetime: params.date + 'T' + params.time
+            id: meeting.id,
+            title: meeting.title,
+            datetime: meeting.date + 'T' + meeting.time,
+            contacts: meeting.contacts.map(ContactToAPIContact)
         }
     )
 }

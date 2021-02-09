@@ -24,8 +24,11 @@
         </div>
         <div class="form-group">
             <label>Участники</label>
-            <div>
-                <span :key="contact.id" v-for="contact in meeting.contacts">{{contact.firstName}}</span>
+            <div class="contact-names">
+                <span class="contact-name" :key="contact.id" v-for="contact in meeting.contacts">
+                    {{contact.firstName}}
+                    <button class="btn" @click="removeContact(contact)">X</button>
+                </span>
             </div>
             <SearchField
                 class="form-control"
@@ -72,13 +75,26 @@ export default class EditMeetingForm extends Vue {
             .catch(console.error)
     }
 
-    private addContact (event: Contact) {
-        this.meeting.contacts.push(event)
+    private addContact (item: Contact) {
+        this.meeting.contacts.push(item)
+        this.$emit('update:meeting', this.meeting)
+    }
+
+    private removeContact (item: Contact) {
+        this.meeting.contacts = this.meeting.contacts.filter(contact => contact.id !== item.id)
         this.$emit('update:meeting', this.meeting)
     }
 }
 </script>
 
 <style scoped>
-
+    .contact-name {
+        margin: 0 3px;
+        padding: 4px 5px;
+        border: 1px solid black;
+        border-radius: 15px;
+    }
+    .contact-names {
+        margin-bottom: 2%;
+    }
 </style>
