@@ -4,15 +4,18 @@
         v-model="searchString"
         type="text"
         @input="$emit('inputChange', $event.target.value)"
+        @focus="inputFocused = true"
+        @blur="inputFocused = false"
     />
     <ul v-if="showSuggested" class="list">
         <li
             v-for="item in suggestedItems"
             :key="item.id"
             class="item"
-            @click="$emit('suggestionSelected', item)"
         >
-            {{item}}
+            <button @mousedown="$emit('suggestionSelected', item)">
+                {{item}}
+            </button>
         </li>
     </ul>
 </template>
@@ -33,9 +36,10 @@ export default class SearchField extends Vue {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private suggestedItems!: any[]
     private searchString = ''
+    private inputFocused = false
 
     get showSuggested (): boolean {
-        return this.suggestedItems.length > 0
+        return this.suggestedItems.length > 0 && this.inputFocused
     }
 }
 </script>
@@ -48,5 +52,10 @@ export default class SearchField extends Vue {
         border: 1px solid gray;
         border-radius: 5px;
         margin: 3px;
+    }
+    .item > button {
+        width: 100%;
+        border: 0;
+        background-color: white;
     }
 </style>
