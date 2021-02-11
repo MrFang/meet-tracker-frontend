@@ -1,37 +1,37 @@
 <template>
-    <input v-bind="$attrs" v-model="searchString" type="text" @input="$emit('inputChange', $event.target.value)"/>
-    <List
-        v-if="showSuggested"
-        :items="suggestedItems"
-        :itemTemplate="itemTemplate"
-        @itemClicked="$emit('suggestionSelected', $event)"
+    <input
+        v-bind="$attrs"
+        v-model="searchString"
+        type="text"
+        @input="$emit('inputChange', $event.target.value)"
     />
+    <ul v-if="showSuggested" class="list">
+        <li
+            v-for="item in suggestedItems"
+            :key="item.id"
+            class="item"
+            @click="$emit('suggestionSelected', item)"
+        >
+            {{item}}
+        </li>
+    </ul>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
-import List from '@/components/List.vue'
 
 @Options({
     props: {
         suggestedItems: {
             required: true,
             type: Array
-        },
-        itemTemplate: {
-            required: true,
-            type: Function
         }
     },
-    emits: ['inputChange', 'suggestionSelected'],
-    components: {
-        List
-    }
+    emits: ['inputChange', 'suggestionSelected']
 })
 export default class SearchField extends Vue {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private suggestedItems!: any[]
-    private itemTemplate!: Function
     private searchString = ''
 
     get showSuggested (): boolean {
@@ -41,5 +41,12 @@ export default class SearchField extends Vue {
 </script>
 
 <style scoped>
-
+    .list {
+        list-style-type: none;
+    }
+    .item {
+        border: 1px solid gray;
+        border-radius: 5px;
+        margin: 3px;
+    }
 </style>

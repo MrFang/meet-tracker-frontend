@@ -1,6 +1,8 @@
 <template>
     <template v-if="contacts">
-        <List class="list" :items="contacts" :itemTemplate="contactCard"/>
+        <ul class="list">
+            <li :key="contact.id" v-for="contact in contacts" class="item"><ContactCard :item="contact"/></li>
+        </ul>
         <CreateContactButton />
     </template>
     <Loader v-else />
@@ -11,20 +13,18 @@ import { Contact } from '@/common/types'
 import { Options, Vue } from 'vue-class-component'
 import { getContacts } from '@/api/contacts'
 import Loader from '@/components/Loader.vue'
-import List from '@/components/List.vue'
 import ContactCard from '@/components/contacts/ContactCard.vue'
 import CreateContactButton from '@/components/contacts/CreateContactButton.vue'
 
 @Options({
     components: {
         Loader,
-        List,
-        CreateContactButton
+        CreateContactButton,
+        ContactCard
     }
 })
 export default class ContactsIndexPage extends Vue {
     private contacts: Contact[] | null = null
-    private contactCard = ContactCard
 
     created () {
         getContacts()
@@ -38,5 +38,11 @@ export default class ContactsIndexPage extends Vue {
     .list {
         max-width: 60%;
         margin: 0 auto;
+        list-style-type: none;
+    }
+    .item {
+        border: 1px solid gray;
+        border-radius: 5px;
+        margin: 3px;
     }
 </style>

@@ -33,7 +33,6 @@
             <SearchField
                 class="form-control"
                 :suggestedItems="suggestedParticipants"
-                :itemTemplate="contactCard"
                 @inputChange="participantInputChange"
                 @suggestionSelected="addContact"
             />
@@ -47,7 +46,6 @@ import { Contact, Meeting } from '@/common/types'
 import { Options, Vue } from 'vue-class-component'
 import { searchContacts } from '@/api/search'
 import SearchField from '@/components/SearchField.vue'
-import ContactCard from '@/components/contacts/ContactCard.vue'
 
 @Options({
     props: {
@@ -63,16 +61,17 @@ import ContactCard from '@/components/contacts/ContactCard.vue'
 export default class EditMeetingForm extends Vue {
     private meeting!: Meeting
     private suggestedParticipants: Contact[] = []
-    private contactCard = ContactCard
+
+    created () {
+        this.search('')
+    }
 
     private submit () {
         this.$emit('submit')
     }
 
     private participantInputChange (newValue: string) {
-        searchContacts(newValue)
-            .then(result => { this.suggestedParticipants = result })
-            .catch(console.error)
+        this.search(newValue)
     }
 
     private addContact (item: Contact) {
@@ -83,6 +82,14 @@ export default class EditMeetingForm extends Vue {
     private removeContact (item: Contact) {
         this.meeting.contacts = this.meeting.contacts.filter(contact => contact.id !== item.id)
         this.$emit('update:meeting', this.meeting)
+    }
+
+    private search (searchString: string) {
+        searchContacts(searchString)
+            .then(result => {
+                this.suggestedParticipants = result
+            })
+            .catch(console.error)
     }
 }
 </script>
