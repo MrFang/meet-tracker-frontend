@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{ name: 'MeetingInfo', params: { id: item.id } }">{{ item }}</router-link>
+    {{ meeting }}
 </template>
 
 <script lang="ts">
@@ -8,14 +8,14 @@ import { Options, Vue } from 'vue-class-component'
 
 @Options({
     props: {
-        item: {
+        meeting: {
             required: true,
             type: Object
         }
     }
 })
 export default class MeetingCard extends Vue {
-    private item!: Meeting
+    private meeting!: Meeting
 }
 </script>
 

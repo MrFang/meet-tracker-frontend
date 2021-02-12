@@ -1,7 +1,11 @@
 <template>
     <template v-if="meetings">
         <ul class="list">
-            <li :key="meeting.id" v-for="meeting in meetings" class="item"><MeetingCard :item="meeting"/></li>
+            <li :key="meeting.id" v-for="meeting in meetings" class="item">
+                <router-link :to="{ name: 'MeetingInfo', params: { id: meeting.id } }">
+                    <MeetingCard :meeting="meeting"/>
+                </router-link>
+            </li>
         </ul>
         <CreateMeetingButton />
     </template>

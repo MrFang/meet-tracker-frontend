@@ -13,7 +13,7 @@
             :key="item.id"
             class="item"
         >
-            <button @mousedown="$emit('suggestionSelected', item)">
+            <button @mousedown.left="$emit('suggestionSelected', item)">
                 {{item}}
             </button>
         </li>

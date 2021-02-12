@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{ name: 'ContactInfo', params: { id: item.id } }">{{ item }}</router-link>
+    {{ contact }}
 </template>
 
 <script lang="ts">
@@ -8,14 +8,14 @@ import { Options, Vue } from 'vue-class-component'
 
 @Options({
     props: {
-        item: {
+        contact: {
             required: true,
             type: Object
         }
     }
 })
 export default class ContactCard extends Vue {
-    private item!: Contact
+    private contact!: Contact
 }
 </script>
 

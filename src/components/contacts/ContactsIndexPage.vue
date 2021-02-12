@@ -1,7 +1,11 @@
 <template>
     <template v-if="contacts">
         <ul class="list">
-            <li :key="contact.id" v-for="contact in contacts" class="item"><ContactCard :item="contact"/></li>
+            <li :key="contact.id" v-for="contact in contacts" class="item">
+                <router-link :to="{ name: 'ContactInfo', params: { id: contact.id } }">
+                    <ContactCard :contact="contact"/>
+                </router-link>
+            </li>
         </ul>
         <CreateContactButton />
     </template>

@@ -76,11 +76,14 @@ export default class EditMeetingForm extends Vue {
 
     private addContact (item: Contact) {
         this.meeting.contacts.push(item)
+        this.suggestedParticipants = this.suggestedParticipants
+            .filter((parcipiant) => parcipiant.id !== item.id)
         this.$emit('update:meeting', this.meeting)
     }
 
     private removeContact (item: Contact) {
         this.meeting.contacts = this.meeting.contacts.filter(contact => contact.id !== item.id)
+        this.suggestedParticipants.push(item)
         this.$emit('update:meeting', this.meeting)
     }
 
@@ -88,6 +91,7 @@ export default class EditMeetingForm extends Vue {
         searchContacts(searchString)
             .then(result => {
                 this.suggestedParticipants = result
+                    .filter(contact => !this.meeting.contacts.map(c => c.id).includes(contact.id))
             })
             .catch(console.error)
     }
