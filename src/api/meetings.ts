@@ -9,7 +9,7 @@ function APIMeetingToMeeting (apiMeeting: APIMeeting): Meeting {
         title: apiMeeting.title,
         date: apiMeeting.datetime.split('T')[0],
         time: apiMeeting.datetime.split('T')[1],
-        contacts: apiMeeting.contacts.map(APIContactToContact)
+        contacts: apiMeeting.contacts?.map(APIContactToContact)
     }
 }
 
@@ -36,9 +36,17 @@ export async function updateMeeting (meeting: Meeting): Promise<void> {
     )
 }
 
-export async function getMeetings (): Promise<Meeting[]> {
+export async function getMeetings (startDate?: string, endDate?: string): Promise<Meeting[]> {
+    let URL = 'meetings/list?'
+    if (startDate) {
+        URL += `start_date=${startDate}&`
+    }
+    if (endDate) {
+        URL += `end_date=${endDate}&`
+    }
+
     const data: APIMeeting[] = await withAuth.get<SuccessAPIResponseWithData<APIMeeting[]>>(
-        'meetings/list'
+        URL
     ).then((resp) => {
         return resp.data.data
     })
