@@ -45,7 +45,9 @@
                                 class="border position-absolute w-100 meeting"
                                 :style="{ top: computeMeetingPositionInPx(meeting) }"
                             >
-                                {{ meeting.title }}
+                                <button @click="clickedMeeting = meeting">
+                                    {{ meeting.title }}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -54,6 +56,11 @@
         </div>
         <GridContactList />
     </div>
+    <AppModal v-show="clickedMeeting" @close="clickedMeeting = null">
+        <template v-slot:body>
+            <MeetingInfo />
+        </template>
+    </AppModal>
 </template>
 
 <script lang="ts">
@@ -63,11 +70,15 @@ import GridContactList from './GridContactList.vue'
 import moment, { Moment } from 'moment'
 import { getMeetings } from '@/api/meetings'
 import { Meeting } from '@/common/types'
+import AppModal from '@/components/AppModal.vue'
+import MeetingInfo from '@/components/meetings/MeetingInfo.vue'
 
 @Options({
     components: {
         GridHeader,
-        GridContactList
+        GridContactList,
+        AppModal,
+        MeetingInfo
     },
     watch: {
         monday (newMonday: Moment, oldMonday: Moment) {
@@ -80,6 +91,7 @@ import { Meeting } from '@/common/types'
 export default class GridLayout extends Vue {
     private HOUR_HEIGHT_PX = 50
     private SECONDS_IN_HOUR = 60 * 60
+    private clickedMeeting: Meeting | null = null
 
     private requestedDay = moment()
 
@@ -152,5 +164,11 @@ export default class GridLayout extends Vue {
         overflow: hidden;
         text-overflow: ellipsis;
         max-height: 30px;
+    }
+    .meeting > button {
+        border: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
     }
 </style>
