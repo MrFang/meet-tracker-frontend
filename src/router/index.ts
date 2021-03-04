@@ -9,6 +9,7 @@ import EditContactPage from '@/components/contacts/EditContactPage.vue'
 import ContactInfoPage from '@/components/contacts/ContactInfoPage.vue'
 import LoginPage from '@/components/auth/LoginPage.vue'
 import RegisterPage from '@/components/auth/RegisterPage.vue'
+import GridLayout from '@/layouts/Grid/GridLayout.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -99,6 +100,10 @@ const routes: Array<RouteRecordRaw> = [
                 name: 'Register'
             }
         ]
+    },
+    {
+        path: '/grid',
+        component: GridLayout
     }
 ]
 

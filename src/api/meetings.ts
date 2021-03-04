@@ -19,7 +19,7 @@ export async function createMeeting (meeting: Meeting): Promise<void> {
         {
             title: meeting.title,
             datetime: meeting.date + 'T' + meeting.time,
-            contacts: meeting.contacts.map(ContactToAPIContact)
+            contacts: meeting.contacts?.map(ContactToAPIContact)
         }
     )
 }
@@ -31,7 +31,7 @@ export async function updateMeeting (meeting: Meeting): Promise<void> {
             id: meeting.id,
             title: meeting.title,
             datetime: meeting.date + 'T' + meeting.time,
-            contacts: meeting.contacts.map(ContactToAPIContact)
+            contacts: meeting.contacts?.map(ContactToAPIContact)
         }
     )
 }
