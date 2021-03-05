@@ -1,29 +1,23 @@
 <template>
     <transition name="modal">
-        <div class="modal-mask" @click="$emit('close')">
-            <div class="modal-wrapper">
-                <div class="modal-container">
+        <div class="modal mask">
+            <div class="modal-dialog wrapper">
+                <div class="modal-container modal-content">
+                    <div class="modal-header">
+                        <slot name="header">
+                            default header
+                        </slot>
+                    </div>
 
-                <div class="modal-header">
-                    <slot name="header">
-                        default header
-                    </slot>
-                </div>
+                    <div class="modal-body">
+                        <slot name="body">
+                            default body
+                        </slot>
+                    </div>
 
-                <div class="modal-body">
-                    <slot name="body">
-                        default body
-                    </slot>
-                </div>
-
-                <div class="modal-footer">
-                    <slot name="footer">
-                        default footer
-                        <button class="modal-default-button" @click="$emit('close')">
-                            OK
-                        </button>
-                    </slot>
-                </div>
+                    <div class="footer modal-footer">
+                        <slot name="footer"></slot>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,13 +25,16 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { Options, Vue } from 'vue-class-component'
 
+@Options({
+    emits: ['close']
+})
 export default class AppModal extends Vue {}
 </script>
 
 <style scoped>
-    .modal-mask {
+    .mask {
         position: fixed;
         z-index: 9998;
         top: 0;
@@ -49,7 +46,7 @@ export default class AppModal extends Vue {}
         transition: opacity 0.3s ease;
     }
 
-    .modal-wrapper {
+    .wrapper {
         display: table-cell;
         vertical-align: middle;
     }
@@ -65,13 +62,8 @@ export default class AppModal extends Vue {}
         transition: all 0.3s ease;
     }
 
-    .modal-body {
+    .body {
         margin: 20px 0;
-    }
-
-    .modal-default-button {
-        display: block;
-        margin-top: 1rem;
     }
 
     .modal-enter {

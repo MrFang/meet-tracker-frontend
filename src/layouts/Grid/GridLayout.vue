@@ -2,65 +2,31 @@
     <GridHeader v-model:dateString="dateString" />
     <div class="row flex-nowrap">
         <div class="col-9 p-0">
-            <div class="d-flex flex-column">
-                <div class="d-flex justify-content-between">
-                    <div>&NonBreakingSpace; &NonBreakingSpace; &NonBreakingSpace;</div>
-                    <div
-                        v-for="(date, idx) in weekDates"
-                        :key="idx"
-                        :class="['flex-grow-1', 'border-right', idx === 0 ? 'border-left' : '']"
-                    >
-                        {{ date }}
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <div
-                            v-for="i in 24"
-                            :key="i"
-                            class="hr"
-                            :style="{ height: String(HOUR_HEIGHT_PX) + 'px' }"
-                        ></div>
-                    </div>
-                    <div>
-                        <div>&NonBreakingSpace; &NonBreakingSpace; &NonBreakingSpace;</div>
-                        <div
-                            v-for="i in 23"
-                            :key="i"
-                            class="position-absolute"
-                            :style="{ top: String(HOUR_HEIGHT_PX*i) + 'px' }"
-                        >
-                            {{ i }}
-                        </div>
-                    </div>
-                    <div
-                        v-for="(day, idx) in meetingsSchedule"
-                        :key="idx"
-                        :class="['flex-grow-1', 'border-right', idx === 0 ? 'border-left' : '']"
-                    >
-                        <div class="w-100 h-100 position-relative">
-                            <div
-                                v-for="(meeting, idx) in day"
-                                :key="idx"
-                                class="border position-absolute w-100 meeting"
-                                :style="{ top: computeMeetingPositionInPx(meeting) }"
-                            >
-                                <button @click="clickedMeeting = meeting">
-                                    {{ meeting.title }}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <MeetingsSchedule
+                :weekDates="weekDates"
+                :meetingsList="meetingsList"
+                @meetingClicked="clickedMeeting = $event"
+            />
         </div>
         <div class="col ml-2 border">
             <GridContactList />
         </div>
     </div>
-    <AppModal v-show="clickedMeeting" @close="clickedMeeting = null">
+    <AppModal v-if="clickedMeeting">
+        <template v-slot:header>
+            <h3>{{clickedMeeting.title}}</h3>
+        </template>
         <template v-slot:body>
-            <MeetingInfo />
+            <MeetingInfo :meeting="clickedMeeting" />
+        </template>
+        <template v-slot:footer>
+            <button class="btn btn-danger ml-1" @click="clickedMeeting = null">Close</button>
+            <button
+                class="btn btn-primary"
+                @click="updateMeeting(clickedMeeting)"
+            >
+                Submit
+            </button>
         </template>
     </AppModal>
 </template>
@@ -70,17 +36,19 @@ import { Options, Vue } from 'vue-class-component'
 import GridHeader from './GridHeader.vue'
 import GridContactList from './GridContactList.vue'
 import moment, { Moment } from 'moment'
-import { getMeetings } from '@/api/meetings'
+import { getMeetings, updateMeeting } from '@/api/meetings'
 import { Meeting } from '@/common/types'
 import AppModal from '@/components/AppModal.vue'
 import MeetingInfo from '@/components/meetings/MeetingInfo.vue'
+import MeetingsSchedule from './MeetingsSchedule.vue'
 
 @Options({
     components: {
         GridHeader,
         GridContactList,
         AppModal,
-        MeetingInfo
+        MeetingInfo,
+        MeetingsSchedule
     },
     watch: {
         monday (newMonday: Moment, oldMonday: Moment): void {
@@ -91,13 +59,13 @@ import MeetingInfo from '@/components/meetings/MeetingInfo.vue'
     }
 })
 export default class GridLayout extends Vue {
-    private HOUR_HEIGHT_PX = 50
-    private SECONDS_IN_HOUR = 60 * 60
     private clickedMeeting: Meeting | null = null
-
     private requestedDay = moment()
-
     private meetingsList: Meeting[] = []
+
+    created (): void {
+        this.getMeetings()
+    }
 
     get monday (): Moment {
         return moment(this.requestedDay).subtract(this.requestedDay.isoWeekday() - 1, 'days')
@@ -121,20 +89,6 @@ export default class GridLayout extends Vue {
         this.requestedDay = moment(newValue)
     }
 
-    get meetingsSchedule (): Meeting[][] {
-        const schedule: Meeting[][] = this.weekDates.map(() => [])
-
-        this.meetingsList.forEach((meeting) => {
-            schedule[moment(meeting.date).isoWeekday() - 1].push(meeting)
-        })
-
-        return schedule
-    }
-
-    created (): void {
-        this.getMeetings()
-    }
-
     private getMeetings (): void {
         const mondayDateString = this.monday.format('YYYY-MM-DD')
         const sundayDateString = moment(this.monday).add(6, 'days').format('YYYY-MM-DD')
@@ -145,32 +99,12 @@ export default class GridLayout extends Vue {
             })
     }
 
-    private computeMeetingPositionInPx (meeting: Meeting): string {
-        const secondsFromDayStart = moment(`${meeting.date}T${meeting.time}`, 'YYYY-MM-DDThh:mm').unix() - moment(meeting.date).unix()
-        const meetingHour = secondsFromDayStart / this.SECONDS_IN_HOUR
-
-        return String(meetingHour * this.HOUR_HEIGHT_PX) + 'px'
+    private updateMeeting (meeting: Meeting): void {
+        updateMeeting(meeting)
+            .then(() => { this.clickedMeeting = null })
     }
 }
 </script>
 
 <style scoped>
-    .hr::after {
-        position: absolute;
-        width: 100%;
-        content: '';
-        border-bottom: 1px solid gray;
-    }
-    .meeting {
-        background-color: white;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-height: 30px;
-    }
-    .meeting > button {
-        border: 0;
-        width: 100%;
-        height: 100%;
-        background-color: transparent;
-    }
 </style>

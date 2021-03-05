@@ -9,7 +9,7 @@ function APIMeetingToMeeting (apiMeeting: APIMeeting): Meeting {
         title: apiMeeting.title,
         date: apiMeeting.datetime.split('T')[0],
         time: apiMeeting.datetime.split('T')[1],
-        contacts: apiMeeting.contacts?.map(APIContactToContact)
+        contacts: apiMeeting.contacts.map(APIContactToContact)
     }
 }
 
