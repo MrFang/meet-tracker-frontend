@@ -81,7 +81,7 @@ import MeetingInfo from '@/components/meetings/MeetingInfo.vue'
         MeetingInfo
     },
     watch: {
-        monday (newMonday: Moment, oldMonday: Moment) {
+        monday (newMonday: Moment, oldMonday: Moment): void {
             if (newMonday.format('YYYY-MM-DD') !== oldMonday.format('YYYY-MM-DD')) {
                 this.getMeetings()
             }
@@ -129,11 +129,11 @@ export default class GridLayout extends Vue {
         return schedule
     }
 
-    created () {
+    created (): void {
         this.getMeetings()
     }
 
-    private getMeetings () {
+    private getMeetings (): void {
         const mondayDateString = this.monday.format('YYYY-MM-DD')
         const sundayDateString = moment(this.monday).add(6, 'days').format('YYYY-MM-DD')
 
