@@ -54,7 +54,9 @@
                 </div>
             </div>
         </div>
-        <GridContactList />
+        <div class="col ml-2 border">
+            <GridContactList />
+        </div>
     </div>
     <AppModal v-show="clickedMeeting" @close="clickedMeeting = null">
         <template v-slot:body>
