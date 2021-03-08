@@ -1,7 +1,10 @@
 <template>
-    <GridHeader v-model:dateString="dateString" />
+    <GridHeader class="mb-2 mt-2" />
     <div class="row flex-nowrap">
         <div class="col-9 p-0">
+            <div class="row mb-2">
+                <GridToolPanel v-model:dateString="dateString" />
+            </div>
             <MeetingsSchedule
                 :weekDates="weekDates"
                 :meetingsList="meetingsList"
@@ -17,38 +20,31 @@
             <h3>{{clickedMeeting.title}}</h3>
         </template>
         <template v-slot:body>
-            <MeetingInfo :meeting="clickedMeeting" />
-        </template>
-        <template v-slot:footer>
-            <button class="btn btn-danger ml-1" @click="clickedMeeting = null">Close</button>
-            <button
-                class="btn btn-primary"
-                @click="updateMeeting(clickedMeeting)"
-            >
-                Submit
-            </button>
+            <MeetingForm v-model:meeting="clickedMeeting" @submit="getMeetings()" />
         </template>
     </AppModal>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
-import GridHeader from './GridHeader.vue'
+import GridToolPanel from './GridToolPanel.vue'
 import GridContactList from './GridContactList.vue'
 import moment, { Moment } from 'moment'
 import { getMeetings, updateMeeting } from '@/api/meetings'
 import { Meeting } from '@/common/types'
 import AppModal from '@/components/AppModal.vue'
-import MeetingInfo from '@/components/meetings/MeetingInfo.vue'
+import MeetingForm from '@/components/meetings/EditMeetingForm.vue'
 import MeetingsSchedule from './MeetingsSchedule.vue'
+import GridHeader from './GridHeader.vue'
 
 @Options({
     components: {
-        GridHeader,
+        GridToolPanel,
         GridContactList,
         AppModal,
-        MeetingInfo,
-        MeetingsSchedule
+        MeetingForm,
+        MeetingsSchedule,
+        GridHeader
     },
     watch: {
         monday (newMonday: Moment, oldMonday: Moment): void {
@@ -75,7 +71,12 @@ export default class GridLayout extends Vue {
         const week = []
 
         for (let i = 0; i < 7; i++) {
-            week.push(moment(this.monday).add(i, 'days').format('DD'))
+            week.push(
+                moment(this.monday)
+                    .add(i, 'days')
+                    .locale(moment.locale('ru', { weekdaysMin: 'Вс_Пн_Вт_Ср_Чт_Пт_Сб'.split('_') }))
+                    .format('dd, DD.MM')
+            )
         }
 
         return week

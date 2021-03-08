@@ -1,7 +1,7 @@
 <template>
     <transition name="modal">
-        <div class="modal mask">
-            <div class="modal-dialog wrapper">
+        <div class="modal modal-mask">
+            <div class="modal-dialog modal-wrapper">
                 <div class="modal-container modal-content">
                     <div class="modal-header">
                         <slot name="header">
@@ -13,10 +13,6 @@
                         <slot name="body">
                             default body
                         </slot>
-                    </div>
-
-                    <div class="footer modal-footer">
-                        <slot name="footer"></slot>
                     </div>
                 </div>
             </div>
@@ -34,7 +30,7 @@ export default class AppModal extends Vue {}
 </script>
 
 <style scoped>
-    .mask {
+    .modal-mask {
         position: fixed;
         z-index: 9998;
         top: 0;
@@ -46,7 +42,7 @@ export default class AppModal extends Vue {}
         transition: opacity 0.3s ease;
     }
 
-    .wrapper {
+    .modal-wrapper {
         display: table-cell;
         vertical-align: middle;
     }

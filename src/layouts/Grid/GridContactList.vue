@@ -1,12 +1,10 @@
 <template>
     <div class="m-1">
         <div class="row mb-2">
-            <div class="col-9"><input class="form-control" type="text" /></div>
-            <div class="col-3">
-                <button class="col btn btn-primary">
-                    <i class="bi-search"></i>
-                </button>
-            </div>
+            <input class="w-75 mr-1" type="text" placeholder="Контакт..."/>
+            <button class="btn btn-primary ml-1">
+                <i class="bi-search"></i>
+            </button>
         </div>
         <div class="row">
             <div class="col">
