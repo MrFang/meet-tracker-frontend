@@ -22,12 +22,12 @@
             <div>
                 <div>&NonBreakingSpace; &NonBreakingSpace; &NonBreakingSpace;</div>
                 <div
-                    v-for="i in 23"
+                    v-for="i in 24"
                     :key="i"
                     class="position-absolute"
                     :style="{ top: String(HOUR_HEIGHT_PX*i) + 'px' }"
                 >
-                    {{ i }}
+                    {{ (i-1) === 0 ? '' : (i-1) }}
                 </div>
             </div>
             <div
@@ -40,11 +40,14 @@
                         v-for="(meeting, idx) in day"
                         :key="idx"
                         class="border position-absolute w-100 meeting"
-                        :style="{ top: computeMeetingPositionInPx(meeting) }"
+                        :style="{
+                            top: computeMeetingPositionInPx(meeting),
+                            minHeight: String(meeting.duration / 60 * HOUR_HEIGHT_PX) + 'px',
+                            maxHeight: String(meeting.duration / 60 * HOUR_HEIGHT_PX) + 'px',
+                        }"
+                        @click="$emit('meetingClicked', meeting)"
                     >
-                        <button @click="$emit('meetingClicked', meeting)">
-                            {{ meeting.title }}
-                        </button>
+                        {{ meeting.title }}
                     </div>
                 </div>
             </div>
@@ -80,14 +83,14 @@ export default class MeetingSchedule extends Vue {
         const schedule: Meeting[][] = this.weekDates.map(() => [])
 
         this.meetingsList.forEach((meeting) => {
-            schedule[moment(meeting.date).isoWeekday() - 1].push(meeting)
+            schedule[moment(meeting.startDate).isoWeekday() - 1].push(meeting)
         })
 
         return schedule
     }
 
     private computeMeetingPositionInPx (meeting: Meeting): string {
-        const secondsFromDayStart = moment(`${meeting.date}T${meeting.time}`, 'YYYY-MM-DDThh:mm').unix() - moment(meeting.date).unix()
+        const secondsFromDayStart = moment(`${meeting.startDate}T${meeting.startTime}`, 'YYYY-MM-DDThh:mm').unix() - moment(meeting.startDate).unix()
         const meetingHour = secondsFromDayStart / this.SECONDS_IN_HOUR
 
         return String(meetingHour * this.HOUR_HEIGHT_PX) + 'px'
@@ -103,15 +106,9 @@ export default class MeetingSchedule extends Vue {
         border-bottom: 1px solid gray;
     }
     .meeting {
-        background-color: white;
+        background-color: cornflowerblue;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-height: 30px;
-    }
-    .meeting > button {
-        border: 0;
-        width: 100%;
-        height: 100%;
-        background-color: transparent;
+        cursor: pointer;
     }
 </style>

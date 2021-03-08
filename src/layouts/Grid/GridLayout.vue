@@ -17,10 +17,17 @@
     </div>
     <AppModal v-if="clickedMeeting">
         <template v-slot:header>
-            <h3>{{clickedMeeting.title}}</h3>
+            <div class="row">
+                <h3 class="col-11">{{clickedMeeting.title}}</h3>
+                <button @click="clickedMeeting = null" class="col" style="border: 0; background-color: transparent;">X</button>
+            </div>
         </template>
         <template v-slot:body>
-            <MeetingForm v-model:meeting="clickedMeeting" @submit="getMeetings()" />
+            <MeetingForm
+                v-model:meeting="clickedMeeting"
+                @submit="updateMeeting(clickedMeeting)"
+                @cancel="clickedMeeting = null"
+            />
         </template>
     </AppModal>
 </template>
@@ -74,7 +81,7 @@ export default class GridLayout extends Vue {
             week.push(
                 moment(this.monday)
                     .add(i, 'days')
-                    .locale(moment.locale('ru', { weekdaysMin: 'Вс_Пн_Вт_Ср_Чт_Пт_Сб'.split('_') }))
+                    .locale('ru')
                     .format('dd, DD.MM')
             )
         }
@@ -90,11 +97,11 @@ export default class GridLayout extends Vue {
         this.requestedDay = moment(newValue)
     }
 
-    private getMeetings (): void {
+    private async getMeetings (): Promise<void> {
         const mondayDateString = this.monday.format('YYYY-MM-DD')
         const sundayDateString = moment(this.monday).add(6, 'days').format('YYYY-MM-DD')
 
-        getMeetings(mondayDateString, sundayDateString)
+        return getMeetings(mondayDateString, sundayDateString)
             .then((meetings) => {
                 this.meetingsList = meetings
             })
@@ -102,6 +109,7 @@ export default class GridLayout extends Vue {
 
     private updateMeeting (meeting: Meeting): void {
         updateMeeting(meeting)
+            .then(() => this.getMeetings())
             .then(() => { this.clickedMeeting = null })
     }
 }

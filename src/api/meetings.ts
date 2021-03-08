@@ -2,35 +2,48 @@ import { Meeting } from '@/common/types'
 import { Meeting as APIMeeting, SuccessAPIResponseWithData, SuccessAPIResponseWithoutData } from './types'
 import { withAuth } from './axios'
 import { APIContactToContact, ContactToAPIContact } from './utils'
+import moment from 'moment'
 
 function APIMeetingToMeeting (apiMeeting: APIMeeting): Meeting {
+    const startDate = moment(apiMeeting.start_datetime, 'YYYY-MM-DDTHH:mm')
+    const endDate = moment(apiMeeting.end_datetime, 'YYYY-MM-DDTHH:mm')
+
     return {
         id: apiMeeting.id,
         title: apiMeeting.title,
-        date: apiMeeting.datetime.split('T')[0],
-        time: apiMeeting.datetime.split('T')[1],
+        startDate: apiMeeting.start_datetime.split('T')[0],
+        startTime: apiMeeting.start_datetime.split('T')[1],
+        duration: endDate.diff(startDate, 'minutes'),
         contacts: apiMeeting.contacts.map(APIContactToContact)
     }
 }
 
 export async function createMeeting (meeting: Meeting): Promise<void> {
+    const startDate = moment(`${meeting.startDate}T${meeting.startTime}`, 'YYYY-MM-DDTHH:mm')
     await withAuth.post<SuccessAPIResponseWithoutData>(
         'meetings/create',
         {
             title: meeting.title,
-            datetime: meeting.date + 'T' + meeting.time,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_datetime: startDate.format('YYYY-MM-DDTHH:mm'),
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_datetime: startDate.add(meeting.duration, 'minutes').format('YYYY-MM-DDTHH:mm'),
             contacts: meeting.contacts?.map(ContactToAPIContact)
         }
     )
 }
 
 export async function updateMeeting (meeting: Meeting): Promise<void> {
+    const startDate = moment(`${meeting.startDate}T${meeting.startTime}`, 'YYYY-MM-DDTHH:mm')
     await withAuth.put<SuccessAPIResponseWithoutData>(
         'meetings/update',
         {
             id: meeting.id,
             title: meeting.title,
-            datetime: meeting.date + 'T' + meeting.time,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_datetime: startDate.format('YYYY-MM-DDTHH:mm'),
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_datetime: startDate.add(meeting.duration, 'minutes').format('YYYY-MM-DDTHH:mm'),
             contacts: meeting.contacts?.map(ContactToAPIContact)
         }
     )

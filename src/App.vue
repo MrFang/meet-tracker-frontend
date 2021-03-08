@@ -5,9 +5,14 @@
 </template>
 
 <script lang="ts">
+import moment from 'moment'
 import { Vue } from 'vue-class-component'
 
-export default class App extends Vue {}
+export default class App extends Vue {
+    created () {
+        moment.updateLocale('ru', { weekdaysMin: 'Вс_Пн_Вт_Ср_Чт_Пт_Сб'.split('_') })
+    }
+}
 </script>
 
 <style>

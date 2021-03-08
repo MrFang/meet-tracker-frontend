@@ -25,8 +25,9 @@ export default class EditMeetingPage extends Vue {
     private meetingId!: number
     private meeting: Meeting = {
         title: '',
-        date: this.getDateStringFromDate(new Date()),
-        time: this.getTimeStringFromDate(new Date()),
+        startDate: this.getDateStringFromDate(new Date()),
+        startTime: this.getTimeStringFromDate(new Date()),
+        duration: 30,
         contacts: []
     }
 

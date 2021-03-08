@@ -3,7 +3,7 @@
         <div class="modal modal-mask">
             <div class="modal-dialog modal-wrapper">
                 <div class="modal-container modal-content">
-                    <div class="modal-header">
+                    <div>
                         <slot name="header">
                             default header
                         </slot>

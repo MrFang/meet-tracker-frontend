@@ -1,8 +1,9 @@
 export interface Meeting {
     id?: number;
     title: string;
-    date: string;
-    time: string;
+    startDate: string;
+    startTime: string;
+    duration: number;
     contacts: Contact[];
 }
 
