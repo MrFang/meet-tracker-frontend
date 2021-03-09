@@ -8,13 +8,13 @@
         @focus="inputFocused = true"
         @blur="inputFocused = false"
     />
-    <ul v-if="showSuggested" class="list">
+    <ul v-show="showSuggested" class="list-group list position-absolute">
         <li
             v-for="item in suggestedItems"
             :key="item.id"
-            class="item"
+            class="list-group-item p-1 m-1 item"
         >
-            <button @mousedown.left="$emit('suggestionSelected', item)">
+            <button class="d-block w-100 border-0" @mousedown.left="$emit('suggestionSelected', item)">
                 {{item}}
             </button>
         </li>
@@ -47,17 +47,16 @@ export default class SearchField extends Vue {
 
 <style scoped>
     .list {
-        list-style-type: none;
+        top: 45px;
+        z-index: 15;
+        display: block;
+        background-color: white;
     }
     .item {
         border: 1px solid gray;
         border-radius: 5px;
-        margin: 3px;
     }
     .item > button {
-        display: block;
-        width: 100%;
-        border: 0;
         background-color: transparent;
     }
 </style>
