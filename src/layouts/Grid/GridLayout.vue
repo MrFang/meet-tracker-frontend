@@ -3,7 +3,7 @@
     <div class="row flex-nowrap">
         <div class="col-9 p-0">
             <div class="row mb-2">
-                <GridToolPanel v-model:dateString="dateString" />
+                <GridToolPanel v-model:dateString="dateString" @createMeeting="createMeeting" />
             </div>
             <MeetingsSchedule
                 :weekDates="weekDates"
@@ -25,7 +25,7 @@
         <template v-slot:body>
             <MeetingForm
                 v-model:meeting="clickedMeeting"
-                @submit="updateMeeting(clickedMeeting)"
+                @submit="submitMeeting(clickedMeeting)"
                 @cancel="clickedMeeting = null"
             />
         </template>
@@ -37,7 +37,7 @@ import { Options, Vue } from 'vue-class-component'
 import GridToolPanel from './GridToolPanel.vue'
 import GridContactList from './GridContactList.vue'
 import moment, { Moment } from 'moment'
-import { getMeetings, updateMeeting } from '@/api/meetings'
+import { createMeeting, getMeetings, updateMeeting } from '@/api/meetings'
 import { Meeting } from '@/common/types'
 import AppModal from '@/components/AppModal.vue'
 import MeetingForm from '@/components/meetings/EditMeetingForm.vue'
@@ -97,6 +97,22 @@ export default class GridLayout extends Vue {
         this.requestedDay = moment(newValue)
     }
 
+    private createMeeting (): void {
+        this.clickedMeeting = {
+            title: '',
+            startDate: moment().format('YYYY-MM-DD'),
+            startTime: moment().format('HH:mm'),
+            duration: 30,
+            contacts: []
+        }
+    }
+
+    private submitMeeting (meeting: Meeting): void {
+        (meeting.id ? updateMeeting(meeting) : createMeeting(meeting))
+            .then(() => this.getMeetings())
+            .then(() => { this.clickedMeeting = null })
+    }
+
     private async getMeetings (): Promise<void> {
         const mondayDateString = this.monday.format('YYYY-MM-DD')
         const sundayDateString = moment(this.monday).add(6, 'days').format('YYYY-MM-DD')
@@ -105,12 +121,6 @@ export default class GridLayout extends Vue {
             .then((meetings) => {
                 this.meetingsList = meetings
             })
-    }
-
-    private updateMeeting (meeting: Meeting): void {
-        updateMeeting(meeting)
-            .then(() => this.getMeetings())
-            .then(() => { this.clickedMeeting = null })
     }
 }
 </script>

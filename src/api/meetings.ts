@@ -28,7 +28,7 @@ export async function createMeeting (meeting: Meeting): Promise<void> {
             start_datetime: startDate.format('YYYY-MM-DDTHH:mm'),
             // eslint-disable-next-line @typescript-eslint/camelcase
             end_datetime: startDate.add(meeting.duration, 'minutes').format('YYYY-MM-DDTHH:mm'),
-            contacts: meeting.contacts?.map(ContactToAPIContact)
+            contacts: meeting.contacts.map(ContactToAPIContact)
         }
     )
 }
@@ -44,7 +44,7 @@ export async function updateMeeting (meeting: Meeting): Promise<void> {
             start_datetime: startDate.format('YYYY-MM-DDTHH:mm'),
             // eslint-disable-next-line @typescript-eslint/camelcase
             end_datetime: startDate.add(meeting.duration, 'minutes').format('YYYY-MM-DDTHH:mm'),
-            contacts: meeting.contacts?.map(ContactToAPIContact)
+            contacts: meeting.contacts.map(ContactToAPIContact)
         }
     )
 }
