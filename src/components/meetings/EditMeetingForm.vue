@@ -58,7 +58,7 @@
                     />
                 </div>
                 <button type="submit" class="btn btn-primary mr-1">Сохранить</button>
-                <button class="btn btn-danger ml-1" @click="$emit('cancel')">Отмена</button>
+                <button class="btn btn-danger ml-1" @click="$emit('delete')">Удалить</button>
             </div>
             <div class="col"></div>
         </div>
@@ -78,7 +78,7 @@ import SearchField from '@/components/SearchField.vue'
             required: true
         }
     },
-    emits: ['update:meeting', 'submit', 'cancel'],
+    emits: ['update:meeting', 'submit', 'delete'],
     components: {
         SearchField
     }

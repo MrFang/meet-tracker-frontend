@@ -7,7 +7,7 @@
             @input="$emit('update:dateString', $event.target.value)"
         />
         <button
-            class="btn btn-primary ml-1"
+            class="btn btn-secondary ml-1"
             @click="resetDate"
         >
             Сегодня

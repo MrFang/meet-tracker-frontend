@@ -12,7 +12,11 @@
             />
         </div>
         <div class="col ml-2 border">
-            <GridContactList />
+            <GridContactList
+                :contacts="contactsList"
+                @contactClicked="clickedContact = $event"
+                @createContact="createContact"
+            />
         </div>
     </div>
     <AppModal v-if="clickedMeeting">
@@ -26,7 +30,22 @@
             <MeetingForm
                 v-model:meeting="clickedMeeting"
                 @submit="submitMeeting(clickedMeeting)"
-                @cancel="clickedMeeting = null"
+                @delete="deleteMeeting(clickedMeeting)"
+            />
+        </template>
+    </AppModal>
+    <AppModal v-if="clickedContact">
+        <template v-slot:header>
+            <div class="row">
+                <h3 class="col-11">{{clickedContact.firstName}} {{clickedContact.secondName}}</h3>
+                <button @click="clickedContact = null" class="col" style="border: 0; background-color: transparent;">X</button>
+            </div>
+        </template>
+        <template v-slot:body>
+            <ContactForm
+                v-model:contact="clickedContact"
+                @submit="submitContact(clickedContact)"
+                @delete="deleteContact(clickedContact)"
             />
         </template>
     </AppModal>
@@ -37,12 +56,14 @@ import { Options, Vue } from 'vue-class-component'
 import GridToolPanel from './GridToolPanel.vue'
 import GridContactList from './GridContactList.vue'
 import moment, { Moment } from 'moment'
-import { createMeeting, getMeetings, updateMeeting } from '@/api/meetings'
-import { Meeting } from '@/common/types'
+import { createMeeting, deleteMeeting, getMeetings, updateMeeting } from '@/api/meetings'
+import { Contact, Meeting } from '@/common/types'
 import AppModal from '@/components/AppModal.vue'
 import MeetingForm from '@/components/meetings/EditMeetingForm.vue'
 import MeetingsSchedule from './MeetingsSchedule.vue'
 import GridHeader from './GridHeader.vue'
+import ContactForm from '@/components/contacts/EditContactForm.vue'
+import { createContact, deleteContact, getContacts, updateContact } from '@/api/contacts'
 
 @Options({
     components: {
@@ -50,6 +71,7 @@ import GridHeader from './GridHeader.vue'
         GridContactList,
         AppModal,
         MeetingForm,
+        ContactForm,
         MeetingsSchedule,
         GridHeader
     },
@@ -63,11 +85,14 @@ import GridHeader from './GridHeader.vue'
 })
 export default class GridLayout extends Vue {
     private clickedMeeting: Meeting | null = null
+    private clickedContact: Contact | null = null
     private requestedDay = moment()
     private meetingsList: Meeting[] = []
+    private contactsList: Contact[] = []
 
     created (): void {
         this.getMeetings()
+        this.getContacts()
     }
 
     get monday (): Moment {
@@ -113,14 +138,45 @@ export default class GridLayout extends Vue {
             .then(() => { this.clickedMeeting = null })
     }
 
+    private deleteMeeting (meeting: Meeting): void {
+        meeting.id
+            ? deleteMeeting(meeting.id)
+                .then(() => this.getMeetings())
+                .then(() => { this.clickedMeeting = null })
+            : this.clickedMeeting = null
+    }
+
     private async getMeetings (): Promise<void> {
         const mondayDateString = this.monday.format('YYYY-MM-DD')
         const sundayDateString = moment(this.monday).add(6, 'days').format('YYYY-MM-DD')
 
         return getMeetings(mondayDateString, sundayDateString)
-            .then((meetings) => {
-                this.meetingsList = meetings
-            })
+            .then((meetings) => { this.meetingsList = meetings })
+    }
+
+    private createContact (): void {
+        this.clickedContact = {
+            firstName: ''
+        }
+    }
+
+    private submitContact (contact: Contact): void {
+        (contact.id ? updateContact(contact) : createContact(contact))
+            .then(() => this.getContacts())
+            .then(() => { this.clickedContact = null })
+    }
+
+    private deleteContact (contact: Contact): void {
+        contact.id
+            ? deleteContact(contact.id)
+                .then(() => this.getContacts())
+                .then(() => { this.clickedContact = null })
+            : this.clickedContact = null
+    }
+
+    private async getContacts (): Promise<void> {
+        return getContacts()
+            .then((contacts) => { this.contactsList = contacts })
     }
 }
 </script>

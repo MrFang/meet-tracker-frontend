@@ -10,13 +10,11 @@
             <div class="col">
                 <template v-if="contacts">
                     <ul class="list-group">
-                        <li :key="contact.id" v-for="contact in contacts" class="list-group-item">
-                            <router-link :to="{ name: 'ContactInfo', params: { id: contact.id } }">
-                                <ContactCard :contact="contact"/>
-                            </router-link>
+                        <li :key="contact.id" v-for="contact in contacts" class="list-group-item p-1">
+                            <ContactCard :contact="contact" @click="$emit('contactClicked', $event)"/>
                         </li>
                     </ul>
-                    <CreateContactButton />
+                    <button class="btn btn-primary mt-2" @click="$emit('createContact')">Добавить контакт</button>
                 </template>
                 <Loader v-else />
             </div>
@@ -25,28 +23,26 @@
 </template>
 
 <script lang="ts">
-import { getContacts } from '@/api/contacts'
 import { Contact } from '@/common/types'
 import { Options, Vue } from 'vue-class-component'
 import Loader from '@/components/Loader.vue'
 import ContactCard from '@/components/contacts/ContactCard.vue'
-import CreateContactButton from '@/components/contacts/CreateContactButton.vue'
 
 @Options({
     components: {
         Loader,
-        CreateContactButton,
         ContactCard
-    }
+    },
+    props: {
+        contacts: {
+            required: true,
+            type: Array
+        }
+    },
+    emits: ['contactClicked', 'createContact']
 })
 export default class GridContactList extends Vue {
-    private contacts: Contact[] | null = null
-
-    created () {
-        getContacts()
-            .then(data => { this.contacts = data })
-            .catch(console.error)
-    }
+    private contacts!: Contact[]
 }
 </script>
 

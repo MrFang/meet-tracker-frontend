@@ -22,7 +22,8 @@
                 @input="$emit('update:contact', {...contact, telephone: $event.target.value || null})"
             />
         </div>
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <button type="submit" class="btn btn-primary mr-1">Сохранить</button>
+        <button class="btn btn-danger ml-1" @click="$emit('delete')">Удалить</button>
     </form>
 </template>
 
@@ -36,7 +37,7 @@ import { Options, Vue } from 'vue-class-component'
             required: true
         }
     },
-    emits: ['update:contact', 'submit']
+    emits: ['update:contact', 'submit', 'delete']
 })
 export default class EditContactForm extends Vue {
     private contact!: Contact

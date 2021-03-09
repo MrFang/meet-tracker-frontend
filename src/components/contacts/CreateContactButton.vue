@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{name: 'CreateContact'}"><button class="btn btn-primary">Добавить контакт</button></router-link>
+    <router-link :to="{name: 'CreateContact'}"><button :class="['btn', 'btn-primary', $attrs.class]">Добавить контакт</button></router-link>
 </template>
 
 <script lang="ts">
