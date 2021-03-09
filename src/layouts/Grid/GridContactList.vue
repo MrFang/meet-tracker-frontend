@@ -1,7 +1,13 @@
 <template>
     <div class="m-1">
         <div class="row mb-2">
-            <input class="w-75 mr-1" type="text" placeholder="Контакт..."/>
+            <SearchField
+                class="form-control d-inline w-75"
+                placeholder="Контакт..."
+                :suggestedItems="searchSuggestions"
+                @inputChange="search($event)"
+                @suggestionSelected="$emit('contactClicked', $event)"
+            />
             <button class="btn btn-primary ml-1">
                 <i class="bi-search"></i>
             </button>
@@ -27,11 +33,14 @@ import { Contact } from '@/common/types'
 import { Options, Vue } from 'vue-class-component'
 import Loader from '@/components/Loader.vue'
 import ContactCard from '@/components/contacts/ContactCard.vue'
+import { searchContacts } from '@/api/search'
+import SearchField from '@/components/SearchField.vue'
 
 @Options({
     components: {
         Loader,
-        ContactCard
+        ContactCard,
+        SearchField
     },
     props: {
         contacts: {
@@ -43,6 +52,13 @@ import ContactCard from '@/components/contacts/ContactCard.vue'
 })
 export default class GridContactList extends Vue {
     private contacts!: Contact[]
+    private searchSuggestions: Contact[] = []
+
+    private search (searchString: string) {
+        searchContacts(searchString)
+            .then(result => { this.searchSuggestions = result })
+            .catch(console.error)
+    }
 }
 </script>
 

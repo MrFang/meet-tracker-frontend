@@ -3,6 +3,7 @@
         v-bind="$attrs"
         v-model="searchString"
         type="text"
+        :placeholder="$attrs.placeholder"
         @input="$emit('inputChange', $event.target.value)"
         @focus="inputFocused = true"
         @blur="inputFocused = false"
@@ -54,8 +55,9 @@ export default class SearchField extends Vue {
         margin: 3px;
     }
     .item > button {
+        display: block;
         width: 100%;
         border: 0;
-        background-color: white;
+        background-color: transparent;
     }
 </style>
