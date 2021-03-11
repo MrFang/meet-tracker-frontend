@@ -8,14 +8,14 @@
         @focus="inputFocused = true"
         @blur="inputFocused = false"
     />
-    <ul v-show="showSuggested" class="list-group list position-absolute">
+    <ul v-show="showSuggested" class="w-100 list-group list position-absolute">
         <li
             v-for="item in suggestedItems"
             :key="item.id"
             class="list-group-item p-1 m-1 item"
         >
             <button class="d-block w-100 border-0" @mousedown.left="$emit('suggestionSelected', item)">
-                {{item}}
+                {{displayItem(item)}}
             </button>
         </li>
     </ul>
@@ -29,11 +29,17 @@ import { Options, Vue } from 'vue-class-component'
         suggestedItems: {
             required: true,
             type: Array
+        },
+        displayItem: {
+            required: false,
+            type: Function
         }
     },
     emits: ['inputChange', 'suggestionSelected']
 })
 export default class SearchField extends Vue {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private displayItem = (item: any) => item
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private suggestedItems!: any[]
     private searchString = ''
@@ -50,7 +56,7 @@ export default class SearchField extends Vue {
         top: 45px;
         z-index: 15;
         display: block;
-        background-color: white;
+        background-color: gray;
     }
     .item {
         border: 1px solid gray;

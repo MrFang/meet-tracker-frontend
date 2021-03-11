@@ -5,6 +5,7 @@
                 class="form-control d-inline w-75"
                 placeholder="Контакт..."
                 :suggestedItems="searchSuggestions"
+                :displayItem="contact => contact.firstName"
                 @inputChange="search($event)"
                 @suggestionSelected="$emit('contactClicked', $event)"
             />
