@@ -1,22 +1,8 @@
 import { Meeting } from '@/common/types'
 import { Meeting as APIMeeting, SuccessAPIResponseWithData, SuccessAPIResponseWithoutData } from './types'
 import { withAuth } from './axios'
-import { APIContactToContact, ContactToAPIContact } from './utils'
+import { APIMeetingToMeeting, ContactToAPIContact } from './utils'
 import moment from 'moment'
-
-function APIMeetingToMeeting (apiMeeting: APIMeeting): Meeting {
-    const startDate = moment(apiMeeting.start_datetime, 'YYYY-MM-DDTHH:mm')
-    const endDate = moment(apiMeeting.end_datetime, 'YYYY-MM-DDTHH:mm')
-
-    return {
-        id: apiMeeting.id,
-        title: apiMeeting.title,
-        startDate: apiMeeting.start_datetime.split('T')[0],
-        startTime: apiMeeting.start_datetime.split('T')[1],
-        duration: endDate.diff(startDate, 'minutes'),
-        contacts: apiMeeting.contacts.map(APIContactToContact)
-    }
-}
 
 export async function createMeeting (meeting: Meeting): Promise<void> {
     const startDate = moment(`${meeting.startDate}T${meeting.startTime}`, 'YYYY-MM-DDTHH:mm')

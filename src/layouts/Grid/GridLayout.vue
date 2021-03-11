@@ -3,7 +3,11 @@
     <div class="row flex-nowrap">
         <div class="col-9 p-0">
             <div class="row mb-2">
-                <GridToolPanel v-model:dateString="dateString" @createMeeting="createMeeting" />
+                <GridToolPanel
+                    v-model:dateString="dateString"
+                    @createMeeting="createMeeting"
+                    @meetingClicked="dateString = $event.date"
+                />
             </div>
             <MeetingsSchedule
                 :weekDates="weekDates"
