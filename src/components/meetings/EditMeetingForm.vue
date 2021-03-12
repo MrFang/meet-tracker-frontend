@@ -104,17 +104,23 @@ export default class EditMeetingForm extends Vue {
     }
 
     private addContact (item: Contact) {
-        const newContacts = this.meeting.contacts.map(c => c)
+        const newContacts = [...this.meeting.contacts]
         newContacts.push(item)
         this.meeting.contacts = newContacts
+
         this.suggestedParticipants = this.suggestedParticipants
             .filter((parcipiant) => parcipiant.id !== item.id)
+
         this.$emit('update:meeting', this.meeting)
     }
 
     private removeContact (item: Contact) {
         this.meeting.contacts = this.meeting.contacts.filter(contact => contact.id !== item.id)
-        this.suggestedParticipants.push(item)
+
+        const newSuggestedParcipiants = [...this.suggestedParticipants]
+        newSuggestedParcipiants.push(item)
+        this.suggestedParticipants = newSuggestedParcipiants
+
         this.$emit('update:meeting', this.meeting)
     }
 
