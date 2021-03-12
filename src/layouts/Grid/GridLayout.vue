@@ -5,14 +5,14 @@
             <div class="row mb-2">
                 <GridToolPanel
                     v-model:dateString="dateString"
-                    @createMeeting="createMeeting"
+                    @createMeeting="openMeetingCreateModal"
                     @meetingClicked="dateString = $event.date"
                 />
             </div>
             <MeetingsSchedule
                 :weekDates="weekDates"
                 :meetingsList="meetingsList"
-                @meetingClicked="clickedMeeting = $event"
+                @meetingClicked="openMeetingEditModal"
             />
         </div>
         <div class="col ml-2 border">
@@ -126,7 +126,13 @@ export default class GridLayout extends Vue {
         this.requestedDay = moment(newValue)
     }
 
-    private createMeeting (): void {
+    private openMeetingEditModal (meeting: Meeting): void {
+        const clickedMeeting = { ...meeting, contacts: [...meeting.contacts] }
+
+        this.clickedMeeting = clickedMeeting
+    }
+
+    private openMeetingCreateModal (): void {
         this.clickedMeeting = {
             title: '',
             startDate: moment().format('YYYY-MM-DD'),

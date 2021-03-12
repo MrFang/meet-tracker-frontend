@@ -42,25 +42,25 @@
                         <textarea class="form-control" placeholder="Notes"></textarea>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Участники</label>
-                    <div class="contact-names">
-                        <span class="contact-name" :key="contact.id" v-for="contact in meeting.contacts">
-                            {{contact.firstName}}
-                            <button class="btn" @click="removeContact(contact)">X</button>
-                        </span>
-                    </div>
-                    <SearchField
-                        class="form-control"
-                        :suggestedItems="suggestedParticipants"
-                        @inputChange="participantInputChange"
-                        @suggestionSelected="addContact"
-                    />
-                </div>
                 <button type="submit" class="btn btn-primary mr-1">Сохранить</button>
                 <button class="btn btn-danger ml-1" @click="$emit('delete')">Удалить</button>
             </div>
-            <div class="col"></div>
+            <div class="col">
+                <SearchField
+                    class="form-control"
+                    placeholder="Добавить контакт..."
+                    :suggestedItems="suggestedParticipants"
+                    :displayItem="(contact) => contact.firstName"
+                    @inputChange="participantInputChange"
+                    @suggestionSelected="addContact"
+                />
+                <ul class="list-group">
+                    <li :key="contact.id" v-for="contact in meeting.contacts" class="list-group-item p-1">
+                            {{contact.firstName}} {{contact.secondName}}
+                            <button class="btn" @click="removeContact(contact)">X</button>
+                    </li>
+                </ul>
+            </div>
         </div>
 
     </form>
@@ -104,7 +104,9 @@ export default class EditMeetingForm extends Vue {
     }
 
     private addContact (item: Contact) {
-        this.meeting.contacts.push(item)
+        const newContacts = this.meeting.contacts.map(c => c)
+        newContacts.push(item)
+        this.meeting.contacts = newContacts
         this.suggestedParticipants = this.suggestedParticipants
             .filter((parcipiant) => parcipiant.id !== item.id)
         this.$emit('update:meeting', this.meeting)
@@ -133,8 +135,5 @@ export default class EditMeetingForm extends Vue {
         padding: 4px 5px;
         border: 1px solid black;
         border-radius: 15px;
-    }
-    .contact-names {
-        margin-bottom: 2%;
     }
 </style>
