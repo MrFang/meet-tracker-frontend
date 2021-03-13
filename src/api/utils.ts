@@ -35,6 +35,6 @@ export function APIMeetingToMeeting (apiMeeting: APIMeeting): Meeting {
         startDate: apiMeeting.start_datetime.split('T')[0],
         startTime: apiMeeting.start_datetime.split('T')[1],
         duration: endDate.diff(startDate, 'minutes'),
-        contacts: apiMeeting.contacts.map(APIContactToContact)
+        contacts: apiMeeting.contacts?.map(APIContactToContact) || []
     }
 }
